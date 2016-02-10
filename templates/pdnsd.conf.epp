@@ -1,0 +1,92 @@
+/* Debian specific configuration to work as a recursive resolver */
+
+global {
+    perm_cache = 10240;
+    cache_dir = "/var/cache/pdnsd";
+    run_as = "pdnsd";
+    server_ip = <%= $pdns_listen %>;
+
+    status_ctl = on;
+    paranoid = on;
+    min_ttl = 10m;          // Retain cached entries at least 15 minutes.
+    max_ttl = 1d;           // One week.
+    timeout = 10;           // Global timeout option (10 seconds).
+
+    delegation_only = "com","net";
+}
+
+server {
+    label = "recurse";
+    root_server = on;
+    randomize_servers = on;
+    ip = 198.41.0.4
+    ,    192.228.79.201
+    ,    192.33.4.12
+    ,    128.8.10.90
+    ,    192.203.230.10
+    ,    192.5.5.241
+    ,    192.112.36.4
+    ,    128.63.2.53
+/*
+    ,    192.36.148.17
+    ,    192.58.128.30
+    ,    193.0.14.129
+    ,    198.32.64.12
+    ,    202.12.27.33
+*/
+    ;
+    timeout = 5;
+    uptest = query;
+    interval = 30m;      // Test every half hour.
+    ping_timeout = 300;  // 30 seconds.
+    purge_cache = off;
+    exclude = .localdomain;
+    policy = included;
+    preset = off;
+}
+
+server {
+    label = "root-server";
+    root_server = on;
+    randomize_servers = on;
+    ip = 198.41.0.4
+    ,    192.228.79.201
+    ,    192.33.4.12
+    ,    128.8.10.90
+    ,    192.203.230.10
+    ,    192.5.5.241
+    ,    192.112.36.4
+    ,    128.63.2.53
+/*
+    ,    192.36.148.17
+    ,    192.58.128.30
+    ,    193.0.14.129
+    ,    198.32.64.12
+    ,    202.12.27.33
+*/
+    ;
+    timeout = 5;
+    uptest = query;
+    interval = 30m;      // Test every half hour.
+    ping_timeout = 300;  // 30 seconds.
+    purge_cache = off;
+    exclude = .localdomain;
+    policy = included;
+    preset = off;
+}
+
+source {
+    owner = localhost;
+    serve_aliases = on;
+    file = "/etc/hosts";
+}
+
+rr {
+    name = localhost;
+    reverse = on;
+    a = 127.0.0.1;
+    owner = localhost;
+    soa = localhost,root.localhost,42,86400,900,86400,86400;
+}
+
+/* vim:set ft=c: */
