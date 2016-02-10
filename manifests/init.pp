@@ -13,30 +13,41 @@
 # * `main`
 #       Main network interface configuration, see cfnetwork::iface for details.
 #       Can be defined separately.
+#
 # * `dns`
 #       DNS server list. Can be defined directly with one of cfnetwork::iface.
 #       Special values:
 #       - '$recurse' - Setup own recourse DNS cache
 #       - '$serve' - Same as '$recure', but also serve clients on $service_face
+#
 # * 'ifaces'
 #       Create cfnetwork::iface resources, if set
+#
 # * 'describe_services'
 #       Create cfnetwork::describe_services resources, if set
+#
 # * 'service_ports'
 #       Create cfnetwork::service_port resources, if set
+#
 # * 'client_ports'
 #       Create cfnetwork::client_port resources, if set
+#
 # * 'dnat_ports'
 #       Create cfnetwork::dnat_port resources, if set
+#
 # * 'router_ports'
 #       Create cfnetwork::router_port resources, if set
+#
 # * 'is_router'
 #       If true, enables packet forwarding and other related sysctl
+#
 # * 'optimize_10gbe'
 #       If true, optimizes network stack for 10+ Gbit network
+#
 # * 'firewall_provider'
 #       Module name, implementing fireall provider. Its value is a soft
 #       dependency. 'cffirehol' is used by default
+#
 # * 'export_resources'
 #       If true, resources are exported to PuppetDB as well
 #

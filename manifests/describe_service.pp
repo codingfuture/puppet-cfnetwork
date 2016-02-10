@@ -1,5 +1,5 @@
 
-define cfnetwork::describe_service(
+define cfnetwork::describe_service (
     $server,
     $client = 'default',
 ) {

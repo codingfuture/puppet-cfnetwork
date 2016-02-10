@@ -1,6 +1,6 @@
 
 class cfnetwork::sysctl (
-    $enable_bridge_filter = false, # module needs to be loaded
+    $enable_bridge_filter = $cfnetwork::sysctl::params::enable_bridge_filter, # module needs to be loaded
     $rp_filter = 1,
     $netdev_max_backlog =  $cfnetwork::sysctl::params::netdev_max_backlog,
     $tcp_fin_timeout = 3,
@@ -190,7 +190,7 @@ class cfnetwork::sysctl (
     #
     # To avoid issues on router or xen host, load bridge module
     # even if not really used.
-    if $enable_bridge_filter or $cfnetwork::is_router {
+    if !$enable_bridge_filter {
         exec {'load_bridge_module':
             command => '/sbin/modprobe bridge',
             unless => '/sbin/lsmod | /bin/egrep "^bridge"',
