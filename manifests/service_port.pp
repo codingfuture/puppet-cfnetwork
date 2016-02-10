@@ -4,11 +4,13 @@ define cfnetwork::service_port (
     $dst = undef,
     $comment = undef,
 ) {
-    @@cfnetwork::internal::exported_port { "${::fqdn}:service:${title}":
-        src=> $src,
-        dst => $dst,
-        comment => $comment,
-        tag => [$::cf_location, $::cf_location_pool],
+    if $::cfnetwork::export_resources {
+        @@cfnetwork::internal::exported_port { "${::fqdn}:service:${title}":
+            src=> $src,
+            dst => $dst,
+            comment => $comment,
+            tag => [$::cf_location, $::cf_location_pool],
+        }
     }
     @cfnetwork_firewall_port { "service:${title}":
         ensure => present,
