@@ -33,7 +33,7 @@ for plug&play firewall rules definition. For example:
 
 Examples:
 
-::
+```puppet
     class { 'cfnetwork':
       main => {
         device  => 'eth0',
@@ -83,10 +83,11 @@ Examples:
     cfnetwork::dnat_port { 'main/dmz2:myhttp':
         to_dst => 'dmz2server',
     }
+``
     
 The same using Hiera:
 
-::
+```yaml
     # someconfig.yaml
     classes:
         - cfnetwork
@@ -127,7 +128,7 @@ The same using Hiera:
         'dmz1/dmz2:myhttp': {}
     cfnetwork::dnat_ports:
         'main/dmz2:myhttp': {}
-        
+```
 
 ### 'any' interface matching rules
 
