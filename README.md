@@ -182,7 +182,7 @@ A matching interface is one of:
 
 ### `cfnetwork::iface` type
 
-* `device` = $title - system interface device name, e.g. 'eth0'
+* `device` =` $title` - system interface device name, e.g. 'eth0'
 * `method` = 'static' - address setup method ('static' of 'dhcp'). Please avoid DHCP as possible.
 * `address` - primary IP address
 * `extra_addresses` - additional address, if any
@@ -216,7 +216,7 @@ A matching interface is one of:
 
 Describe service to use in firewall rules.
 
-* Title: '&lt;iface>:&lt;service>[:&lt;tag>]'
+* Title: `&lt;iface>:&lt;service>[:&lt;tag>]`
 * `server` - list of server-side ports in format "protocol/port", example: 'tcp/80', 'udp/53'
 * `client` = 'default' - list of client-side ports, 'default' - firewall-specific (all ports or 1024-65535)
 
@@ -224,7 +224,7 @@ Describe service to use in firewall rules.
 
 Define allowed outgoing connection for &lt;service> on &lt;iface>.
 
-* Title: '&lt;iface>:&lt;service>[:&lt;tag>]'
+* Title: `&lt;iface>:&lt;service>[:&lt;tag>]`
 * `src` - list of allowed source addresses, if any
 * `dst` - list of allowed destination addresses, if any
 * `user` - list of allowed system user names
@@ -235,7 +235,7 @@ Define allowed outgoing connection for &lt;service> on &lt;iface>.
 
 Define allowed incoming connection for &lt;service> on &lt;iface>.
 
-* Title: '&lt;iface>:&lt;service>[:&lt;tag>]'
+* Title: `&lt;iface>:&lt;service>[:&lt;tag>]`
 * `src` - list of allowed source addresses, if any
 * `dst` - list of allowed destination addresses, if any
 * `comment` - arbitrary comment
@@ -245,7 +245,7 @@ Define allowed incoming connection for &lt;service> on &lt;iface>.
 
 Define allowed routing connection from &lt;inface> to &lt;outface> for &lt;service>.
 
-* Title: '&lt;iface>/&lt;outface>:&lt;service>[:&lt;tag>]'
+* Title: `&lt;iface>/&lt;outface>:&lt;service>[:&lt;tag>]`
 * `src` - list of allowed source addresses, if any
 * `dst` - list of allowed destination addresses, if any
 * `comment` - arbitrary comment
@@ -255,7 +255,7 @@ Define allowed routing connection from &lt;inface> to &lt;outface> for &lt;servi
 Destination Network Address Translation &lt;inface> to &lt;outface> for &lt;service>.
 Note: implicit cfnetwork::route_port is defined - no need to define one manually.
 
-* Title: '&lt;iface>/&lt;outface>:&lt;service>[:&lt;tag>]'
+* Title: `&lt;iface>/&lt;outface>:&lt;service>[:&lt;tag>]`
 * `src` - list of allowed source addresses, if any
 * `dst` - list of allowed destination addresses, if any
 * `to_dst` - DNAT to specific address(s)
@@ -267,66 +267,66 @@ Note: implicit cfnetwork::route_port is defined - no need to define one manually
 
 Self-explanatory sysctl settings with their defaults, unless specially noted:
 
-* `$enable_bridge_filter` = !$::cfnetwork::is_router
+* `$enable_bridge_filter` = `!$::cfnetwork::is_router`
     Only if false, loads `bridge` module and disable netfilter calls on bridges.
     Use routing instead of bridges, if you really need to do filtering or enable it.
     After enabling, you will need to cleanup sysctl.conf and setup values manually.
-* `$rp_filter` = 1
-* `$netdev_max_backlog` = 30000 if $cfnetwork::optimize_10gbe else 2000
-* `$tcp_fin_timeout` = 3
-    Note: it can be too aggressive
-* `$tcp_keepalive_time` = 300
-* `$tcp_keepalive_probes` = 3
-* `$tcp_keepalive_intvl` = 15
-* `$tcp_max_syn_backlog` = 4096
-* `$tcp_no_metrics_save` = 1
-* `$tcp_rfc1337` = 1
-* `$tcp_sack` = 1
-* `$tcp_slow_start_after_idle` = 0
-* `$tcp_synack_retries` = 2
-* `$tcp_syncookies` = 1
-* `$tcp_timestamps` = 1
-* `$tcp_tw_recycle` = 1
-* `$tcp_tw_reuse` = 1
-* `$tcp_window_scaling` = 1
+* `$rp_filter` = `1`
+* `$netdev_max_backlog` = `30000` if `$cfnetwork::optimize_10gbe` else `2000`
+* `$tcp_fin_timeout` = `3`
+    *Note: it can be too aggressive*
+* `$tcp_keepalive_time` = `300`
+* `$tcp_keepalive_probes` = `3`
+* `$tcp_keepalive_intvl` = `15`
+* `$tcp_max_syn_backlog` = `4096`
+* `$tcp_no_metrics_save` = `1`
+* `$tcp_rfc1337` = `1`
+* `$tcp_sack` = `1`
+* `$tcp_slow_start_after_idle` = `0`
+* `$tcp_synack_retries` = `2`
+* `$tcp_syncookies` = `1`
+* `$tcp_timestamps` = `1`
+* `$tcp_tw_recycle` = `1`
+* `$tcp_tw_reuse` = `1`
+* `$tcp_window_scaling` = `1`
 * `$file_max` = 256 per every 4MB of RAM
 * `$somaxconn` = 2048 per every 1GB of RAM
-* `$ip_local_port_range` = '2000 65535'
-* `$rmem_max` = 212992
-    Note: it does not apply to TCP
-* `$wmem_max` = 212992
-    Note: it does not apply to TCP
-* `$rmem_default` = $rmem_max
-* `$wmem_default` = $wmem_max
-* `$tcp_rmem_max` = 67108864 if $cfnetwork::optimize_10gbe else 16777216
-* `$tcp_wmem_max` = 67108864 if $cfnetwork::optimize_10gbe else 16777216
-* `$tcp_rmem_default` = $tcp_rmem_max / 128
-    # Please note, you have to setup manually, if $tcp_rmem_max is set
-* `$tcp_wmem_default` = $tcp_wmem_max / 128
-    # Please note, you have to setup manually, if $tcp_wmem_max is set
-* `$nf_conntrack_max` = undef
-    Note: recent kernels do good autoconfig
-* `$nf_conntrack_expect_max` = undef
-    Note: recent kernels do good autoconfig
-* `$nf_conntrack_generic_timeout` = 600
-* `$nf_conntrack_tcp_timeout_syn_sent` = 20
-    Note: it can be too aggressive
-* `$nf_conntrack_tcp_timeout_syn_recv` = 10
-    Note: it can be too aggressive
-* `$nf_conntrack_tcp_timeout_established` = 1200
-    Note: it can be too aggressive
-* `$nf_conntrack_tcp_timeout_last_ack` = 5
-    Note: it can be too aggressive
-* `$nf_conntrack_tcp_timeout_time_wait` = 3
-    Note: it can be too aggressive
-* `$nf_conntrack_tcp_loose` = 0
-    Note: you don't want to set 1 with pedantic firewall
-* `$nf_conntrack_tcp_be_liberal` = 0
-    Note: you don't want to set 1 with pedantic firewall
-* `$nf_conntrack_tcp_max_retrans` = 3
-    Note: it can be too aggressive
-* `$nf_conntrack_udp_timeout` = 30
-    Note: it can be too aggressive
-* `$nf_conntrack_udp_timeout_stream` = 60
-    Note: it can be too aggressive
-* `$nf_conntrack_icmp_timeout` = 30
+* `$ip_local_port_range` = `'2000 65535'`
+* `$rmem_max` = `212992`
+    *Note: it does not apply to TCP*
+* `$wmem_max` = `212992`
+    *Note: it does not apply to TCP*
+* `$rmem_default` = `$rmem_max`
+* `$wmem_default` = `$wmem_max`
+* `$tcp_rmem_max` = `67108864` if `$cfnetwork::optimize_10gbe` else `16777216`
+* `$tcp_wmem_max` = `67108864` if `$cfnetwork::optimize_10gbe` else `16777216`
+* `$tcp_rmem_default` = `$tcp_rmem_max / 128`
+    *Please note, you have to setup manually, if `$tcp_rmem_max` is set*
+* `$tcp_wmem_default` = `$tcp_wmem_max / 128`
+    *Please note, you have to setup manually, if `$tcp_wmem_max` is set*
+* `$nf_conntrack_max` = `undef`
+    *Note: recent kernels do good autoconfig*
+* `$nf_conntrack_expect_max` = `undef`
+    *Note: recent kernels do good autoconfig*
+* `$nf_conntrack_generic_timeout` = `600`
+* `$nf_conntrack_tcp_timeout_syn_sent` = `20`
+    *Note: it can be too aggressive*
+* `$nf_conntrack_tcp_timeout_syn_recv` = `10`
+    *Note: it can be too aggressive*
+* `$nf_conntrack_tcp_timeout_established` = `1200`
+    *Note: it can be too aggressive*
+* `$nf_conntrack_tcp_timeout_last_ack` = `5`
+    *Note: it can be too aggressive*
+* `$nf_conntrack_tcp_timeout_time_wait` = `3`
+    *Note: it can be too aggressive*
+* `$nf_conntrack_tcp_loose` = `0`
+    *Note: you don't want to set 1 with pedantic firewall*
+* `$nf_conntrack_tcp_be_liberal` = `0`
+    *Note: you don't want to set 1 with pedantic firewall*
+* `$nf_conntrack_tcp_max_retrans` = `3`
+    *Note: it can be too aggressive*
+* `$nf_conntrack_udp_timeout` = `30`
+    *Note: it can be too aggressive*
+* `$nf_conntrack_udp_timeout_stream` = `60`
+    *Note: it can be too aggressive*
+* `$nf_conntrack_icmp_timeout` = `30`
