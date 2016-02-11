@@ -8,18 +8,18 @@ class cfnetwork::debian {
     
     #---
     file { '/etc/network/interfaces':
-        owner => root,
-        group => root,
-        mode => '0644',
+        owner   => root,
+        group   => root,
+        mode    => '0644',
         content => file('cfnetwork/interfaces'),
     }
     
     file { '/etc/network/interfaces.d':
-        ensure => directory,
-        owner => root,
-        group => root,
-        mode => '0755',
-        purge => true,
+        ensure  => directory,
+        owner   => root,
+        group   => root,
+        mode    => '0755',
+        purge   => true,
         recurse => true,
     }
     
@@ -47,14 +47,14 @@ class cfnetwork::debian {
         
         file { '/etc/default/pdnsd':
             content => epp('cfnetwork/pdnsd_default.epp'),
-            notify => Service['pdnsd'],
+            notify  => Service['pdnsd'],
         }
         
         file { '/etc/pdnsd.conf':
             content => epp('cfnetwork/pdnsd.conf.epp', {
                 pdns_listen => $pdns_listen,
             }),
-            notify => Service['pdnsd'],
+            notify  => Service['pdnsd'],
         }
     } else {
         package { 'pdnsd': ensure => absent }

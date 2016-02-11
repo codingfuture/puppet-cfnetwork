@@ -8,7 +8,7 @@ define cfnetwork::internal::exported_host (
     if $title != $::trusted['certname'] {
         host { $title:
             host_aliases => $host_aliases,
-            ip => $ip,
+            ip           => $ip,
         }
     }
 }

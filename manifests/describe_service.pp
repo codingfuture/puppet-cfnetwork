@@ -4,7 +4,7 @@ define cfnetwork::describe_service (
     $client = 'default',
 ) {
     @cfnetwork_firewall_service { $title:
-        ensure => present,
+        ensure       => present,
         server_ports => $server,
         client_ports => $client,
     }

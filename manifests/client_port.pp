@@ -8,20 +8,20 @@ define cfnetwork::client_port (
 ) {
     if $::cfnetwork::export_resources {
         @@cfnetwork::internal::exported_port { "${::fqdn}:client:${title}":
-            src => $src,
-            dst => $dst,
-            user => $user,
-            group => $group,
+            src     => $src,
+            dst     => $dst,
+            user    => $user,
+            group   => $group,
             comment => $comment,
-            tag => [$::cf_location, $::cf_location_pool],
+            tag     => [$::cf_location, $::cf_location_pool],
         }
     }
     @cfnetwork_firewall_port { "client:${title}":
-        ensure => present,
-        src => $src,
-        dst => $dst,
-        user => $user,
-        group => $group,
+        ensure  => present,
+        src     => $src,
+        dst     => $dst,
+        user    => $user,
+        group   => $group,
         comment => $comment,
     }
 }

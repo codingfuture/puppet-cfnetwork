@@ -140,12 +140,12 @@ class cfnetwork (
     
     host {$::trusted['certname']:
         host_aliases => [ $::trusted['hostname'] ],
-        ip => $host_ip,
+        ip           => $host_ip,
     }
     if $export_resources {
         @@cfnetwork::internal::exported_host {$::trusted['certname']:
             host_aliases => [ $::trusted['hostname'] ],
-            ip => $host_ip,
+            ip           => $host_ip,
         }
     }
     
