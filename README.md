@@ -145,6 +145,16 @@ A matching interface is one of:
 * Automatic SNAT to `address` enabled for all valid destinations with unroutable source address
 * Default policy is DROP. For private interfaces default policy is REJECT
 
+## Setup
+
+If r10k is used until [RK-3](https://tickets.puppetlabs.com/browse/RK-3) is solved, make
+sure to have the following lines in Puppetfile:
+
+```ruby
+mod 'puppetlabs/stdlib', '4.11.0'
+mod 'fiddyspence/sysctl', '1.1.0'
+```
+
 ## Classes and resources types
 
 
