@@ -83,7 +83,7 @@ Examples:
     cfnetwork::dnat_port { 'main/dmz2:myhttp':
         to_dst => 'dmz2server',
     }
-``
+```
     
 The same using Hiera:
 
@@ -216,15 +216,15 @@ A matching interface is one of:
 
 Describe service to use in firewall rules.
 
-* Title: '<iface>:<service>[:<tag>]'
+* Title: '&lt;iface>:&lt;service>[:&lt;tag>]'
 * `server` - list of server-side ports in format "protocol/port", example: 'tcp/80', 'udp/53'
 * `client` = 'default' - list of client-side ports, 'default' - firewall-specific (all ports or 1024-65535)
 
 ### `cfnetwork::client_port type`
 
-Define allowed outgoing connection for <service> on <iface>.
+Define allowed outgoing connection for &lt;service> on &lt;iface>.
 
-* Title: '<iface>:<service>[:<tag>]'
+* Title: '&lt;iface>:&lt;service>[:&lt;tag>]'
 * `src` - list of allowed source addresses, if any
 * `dst` - list of allowed destination addresses, if any
 * `user` - list of allowed system user names
@@ -233,9 +233,9 @@ Define allowed outgoing connection for <service> on <iface>.
 
 ### `cfnetwork::service_port` type
 
-Define allowed incoming connection for <service> on <iface>.
+Define allowed incoming connection for &lt;service> on &lt;iface>.
 
-* Title: '<iface>:<service>[:<tag>]'
+* Title: '&lt;iface>:&lt;service>[:&lt;tag>]'
 * `src` - list of allowed source addresses, if any
 * `dst` - list of allowed destination addresses, if any
 * `comment` - arbitrary comment
@@ -243,19 +243,19 @@ Define allowed incoming connection for <service> on <iface>.
 
 ### `cfnetwork::router_port` type
 
-Define allowed routing connection from <inface> to <outface> for <service>.
+Define allowed routing connection from &lt;inface> to &lt;outface> for &lt;service>.
 
-* Title: '<iface>/<outface>:<service>[:<tag>]'
+* Title: '&lt;iface>/&lt;outface>:&lt;service>[:&lt;tag>]'
 * `src` - list of allowed source addresses, if any
 * `dst` - list of allowed destination addresses, if any
 * `comment` - arbitrary comment
 
 ### `cfnetwork::dnat_port` type
 
-Destination Network Address Translation <inface> to <outface> for <service>.
+Destination Network Address Translation &lt;inface> to &lt;outface> for &lt;service>.
 Note: implicit cfnetwork::route_port is defined - no need to define one manually.
 
-* Title: '<iface>/<outface>:<service>[:<tag>]'
+* Title: '&lt;iface>/&lt;outface>:&lt;service>[:&lt;tag>]'
 * `src` - list of allowed source addresses, if any
 * `dst` - list of allowed destination addresses, if any
 * `to_dst` - DNAT to specific address(s)
