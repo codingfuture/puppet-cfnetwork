@@ -24,4 +24,8 @@ Puppet::Type.newtype(:cfnetwork_firewall_service) do
         newvalues('default', /^([a-z0-9]+)\/([1-9][0-9]{0,4})(:[1-9][0-9]{0,4})?$/)
         defaultto(:default)
     end
+
+    newproperty(:comment) do
+        desc "Arbitrary single-line comment"
+    end
 end
