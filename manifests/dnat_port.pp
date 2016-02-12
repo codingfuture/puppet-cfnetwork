@@ -31,6 +31,8 @@ define cfnetwork::dnat_port (
         $orig_service = $title_split[1]
 
         # provider will auto-define one
+        # TODO: use stdlib to get proto from the original service
+        #       to define this DNATed service here
         $service = "${orig_service}_${to_port}"
         cfnetwork::router_port { "${iface}:${service}":
             src => $src,

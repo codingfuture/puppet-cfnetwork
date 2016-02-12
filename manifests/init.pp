@@ -150,17 +150,27 @@ class cfnetwork (
     }
     
     #---
+    cfnetwork::describe_service { 'dns':
+        server => [ 'tcp/53', 'udp/53' ],
+        client => 'any',
+    }
     cfnetwork::describe_service { 'alltcp':
-        server => 'tcp/1:65535'
+        server  => 'tcp/1:65535',
+        client  => 'any',
+        comment => 'Use to open all TCP ports (e.g. for local)',
     }
     cfnetwork::describe_service { 'alludp':
-        server => 'udp/1:65535'
+        server  => 'udp/1:65535',
+        client  => 'any',
+        comment => 'Use to open all UDP ports (e.g. for local)',
     }
     cfnetwork::describe_service { 'allports':
-        server => [ 'udp/1:65535', 'tcp/1:65535']
+        server  => [ 'udp/1:65535', 'tcp/1:65535'],
+        client  => 'any',
+        comment => 'Use to open all TCP and UDP ports (e.g. for local)',
     }
     
-    # Pre-defined ports
+    # Predefined ports
     #---
     if $dnat_ports {
         create_resources(
@@ -198,6 +208,7 @@ class cfnetwork (
     }
     
     if $firewall_provider {
+        # dynamic bi-directional dep
         include $firewall_provider
     }
 }

@@ -5,6 +5,52 @@
 The module exclusively configures system network interfaces, related sysctl items
 and system firewall. The module is designed to be used with Hiera-like data providers.
 
+## Setup
+
+If r10k is used until [RK-3](https://tickets.puppetlabs.com/browse/RK-3) is solved, make
+sure to have the following lines in Puppetfile:
+
+```ruby
+mod 'puppetlabs/stdlib', '4.11.0'
+mod 'fiddyspence/sysctl', '1.1.0'
+# make sure you check dependencies of dependencies too.
+```
+
+## Implicit resources created
+
+```yaml
+cfnetwork::describe_services:
+    'dns':
+        server: [ 'tcp/53', 'udp/53' ]
+        client: 'any'
+    'alltcp':
+        server: 'tcp/1:65535'
+        client: 'any'
+        comment: "Use to open all TCP ports (e.g. for local)"
+    'alludp':
+        server: 'udp/1:65535'
+        client: 'any'
+        comment: "Use to open all UDP ports (e.g. for local)"
+    'allports':
+        server: [ 'udp/1:65535', 'tcp/1:65535']
+        client: 'any'
+        comment: "Use to open all TCP and UDP ports (e.g. for local)"
+cfnetwork::service_ports:
+    'lo:dns': {}
+        comment: 'only in $serve or $recurse mode'
+    "${cfnetwork::service_face}:dns":
+        comment: 'only in $serve mode'
+cfnetwork::client_ports:
+    'main:dns:pdnsd':
+        user: 'pdnsd'
+        comment: 'only in $serve or $recurse mode'
+    'any:dns:cfnetwork':
+        dst => $cfnetwork::dns
+        comment: 'unless in $serve or $recurse mode'
+cfnetwork::router_ports:
+    # for each cfnetwork::dnat_port
+```
+
 ## Concept
 
 Each network interface has a unique name. This identifier is used in firewall port
@@ -145,15 +191,6 @@ A matching interface is one of:
 * Automatic SNAT to `address` enabled for all valid destinations with unroutable source address
 * Default policy is DROP. For private interfaces default policy is REJECT
 
-## Setup
-
-If r10k is used until [RK-3](https://tickets.puppetlabs.com/browse/RK-3) is solved, make
-sure to have the following lines in Puppetfile:
-
-```ruby
-mod 'puppetlabs/stdlib', '4.11.0'
-mod 'fiddyspence/sysctl', '1.1.0'
-```
 
 ## Classes and resources types
 

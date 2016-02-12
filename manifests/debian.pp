@@ -31,6 +31,7 @@ class cfnetwork::debian {
         }
         '$serve': {
             $pdns_listen = '0.0.0.0'
+            cfnetwork::service_port { 'lo:dns': }
             cfnetwork::service_port { "${cfnetwork::service_face}:dns": }
         }
         default: {}
