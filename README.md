@@ -5,6 +5,11 @@
 The module exclusively configures system network interfaces, related sysctl items
 and system firewall. The module is designed to be used with Hiera-like data providers.
 
+## Technical Support
+
+* [Example configuration](https://github.com/codingfuture/puppet-test)
+* Commercial support: [support@codingfuture.net](mailto:support@codingfuture.net)
+
 ## Setup
 
 If r10k is used until [RK-3](https://tickets.puppetlabs.com/browse/RK-3) is solved, make
@@ -57,23 +62,23 @@ Each network interface has a unique name. This identifier is used in firewall po
 definition to specify to which interface to apply the rule.
 
 There are predefined interface names:
-* 'local' - assign rule to loopback interface
-* 'any' - assign rule to all interfaces, unless src or dst is specified. See below.
+* `'local'` - assign rule to loopback interface
+* `'any'` - assign rule to all interfaces, unless src or dst is specified. See below.
 
-Each firewall rule is a pair of "interface:service". Optionally, additional tag can be
-specified "interface:service:tag". Such format allows resource to be defined multiple
-times with no name class and explicit virtual resource processing.
+Each firewall rule name has format of `"interface:service"`. Optionally, additional tag can be
+specified like `"interface:service:tag"`. Such format allows resource to be defined multiple
+times with no name clash and not need for explicit virtual resource processing.
 
 **!!! ALL CONNECTIONS ARE BLOCKED BY DEFAULT, EVEN LOCAL !!!**
 
-The module is designed without actual firewall implementation to use in other arbitrary modules
+The module is designed without actual firewall implementation to serve as abstract API
 for plug&play firewall rules definition. For example:
 
 * this module automatically enables DNS clients and services, if '$recurse'
     or '$serve' is configured
-* **cfauth** module automatically enables incoming SSH connections on configured ports
+* **[cfauth]** module automatically enables incoming SSH connections on configured ports
     from admin hosts
- **cfsystem** module automatically defines rules for NTP, APT repositories, APT cache,
+ **[cfsystem]** module automatically defines rules for NTP, APT repositories, APT cache,
     puppet, etc.
 
 
@@ -258,6 +263,8 @@ A matching interface is one of:
 * `ipv6` = false - if false, forcibly disables IPv6 on the interface
 * `force_public` - firewall-specific. Force mark the interface as public, even if it has address from
     private range, what is useful in cloud environments with suboptimal NAT.
+* `debian_template` = `'cfnetwork/debian_iface.epp'` - supply own template for non-standard interface setup
+* `custom_args` - provide custom arguments to custom `$debian_template`
 
 ### `cfnetwork::describe_service` type
 
@@ -377,3 +384,6 @@ Self-explanatory sysctl settings with their defaults, unless specially noted:
 * `$nf_conntrack_udp_timeout_stream` = `60`
     *Note: it can be too aggressive*
 * `$nf_conntrack_icmp_timeout` = `30`
+
+[cfauth]: https://github.com/codingfuture/puppet-cfauth
+[cfsystem]: https://github.com/codingfuture/puppet-cfsystem
