@@ -222,14 +222,14 @@ A matching interface is one of:
       Create cfnetwork::dnat_port resources, if set
 * 'router_ports'
       Create cfnetwork::router_port resources, if set
-* 'is_router'
+* 'is_router' = `false`
       If true, enables packet forwarding and other related sysctl
-* 'optimize_10gbe'
+* 'optimize_10gbe' = `false`
       If true, optimizes network stack for 10+ Gbit network
-* 'firewall_provider'
+* 'firewall_provider' = `'cffirehol'`
       Module name, implementing fireall provider. Its value is a soft
       dependency. 'cffirehol' is used by default
-* 'export_resources'
+* 'export_resources' = `true`
       If true, resources are exported to PuppetDB as well
 
 ### `cfnetwork::iface` type

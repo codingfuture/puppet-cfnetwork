@@ -7,6 +7,7 @@ project adheres to [Semantic Versioning](http://semver.org/).
 
 - Fixed error with DHCP interfaces
 - Added possibility to provide custom debian interface template
+- Changed to export resources by default (requires PuppetDB)
 
 ## [0.9.0]
 

@@ -87,7 +87,7 @@ class cfnetwork (
     $optimize_10gbe = false, # TODO: facter
     $service_face = 'any',
     $firewall_provider = 'cffirehol',
-    $export_resources = false,
+    $export_resources = true,
 ) {
     include cfnetwork::sysctl
 
