@@ -26,6 +26,9 @@ define cfnetwork::iface (
     
     $ipv6 = false,
     $force_public = false,
+    
+    $debian_template = 'cfnetwork/debian_iface.epp',
+    $custom_args = undef,
 ) {
     include stdlib
     
@@ -43,11 +46,13 @@ define cfnetwork::iface (
         fail('"local" iface name is reserved for lo device')
     }
     
-    $addr_split = split($address, '/')
-    $ip = $addr_split[0]
-    $netmask = $addr_split[1]
-    validate_ip_address($ip)
-    validate_integer($netmask)
+    if $address {
+        $addr_split = split($address, '/')
+        $ip = $addr_split[0]
+        $netmask = $addr_split[1]
+        validate_ip_address($ip)
+        validate_integer($netmask)
+    }
 
     case $::operatingsystem {
         'Debian', 'Ubuntu': {
@@ -56,7 +61,7 @@ define cfnetwork::iface (
                 group   => root,
                 mode    => '0644',
                 replace => true,
-                content => epp('cfnetwork/debian_iface.epp', {
+                content => epp($debian_template, {
                     device          => $device,
                     method          => $method,
                     iface_type      => 'inet',
@@ -79,6 +84,7 @@ define cfnetwork::iface (
                     down            => $down,
                     postdown        => $postdown,
                     ipv6            => $ipv6,
+                    custom_args     => $custom_args,
                 }),
             }
         }
