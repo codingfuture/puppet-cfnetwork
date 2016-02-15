@@ -27,11 +27,11 @@ class cfnetwork::debian {
     case $::cfnetwork::dns {
         '$recurse': {
             $pdns_listen = 'lo'
-            cfnetwork::service_port { 'lo:dns': }
+            cfnetwork::service_port { 'local:dns': }
         }
         '$serve': {
             $pdns_listen = '0.0.0.0'
-            cfnetwork::service_port { 'lo:dns': }
+            cfnetwork::service_port { 'local:dns': }
             cfnetwork::service_port { "${cfnetwork::service_face}:dns": }
         }
         default: {}

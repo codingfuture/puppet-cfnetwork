@@ -6,6 +6,7 @@ project adheres to [Semantic Versioning](http://semver.org/).
 ## [0.9.2]
 
 - Added hiera.yaml version 4 support
+- Fixed to use 'local' instead of 'lo' interface for DNS service
 
 ## [0.9.1]
 

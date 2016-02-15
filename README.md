@@ -46,7 +46,7 @@ cfnetwork::describe_services:
         client: 'any'
         comment: "Use to open all TCP and UDP ports (e.g. for local)"
 cfnetwork::service_ports:
-    'lo:dns': {}
+    'local:dns': {}
         comment: 'only in $serve or $recurse mode'
     "${cfnetwork::service_face}:dns":
         comment: 'only in $serve mode'
