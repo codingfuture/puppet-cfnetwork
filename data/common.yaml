@@ -1,0 +1,12 @@
+---
+lookup_options:
+  cfnetwork::dnat_ports:
+    merge: hash
+  cfnetwork::client_ports:
+    merge: hash
+  cfnetwork::service_ports:
+    merge: hash
+  cfnetwork::describe_services:
+    merge: hash
+  cfnetwork::router_ports:
+    merge: hash
