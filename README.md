@@ -26,7 +26,7 @@ mod 'fiddyspence/sysctl', '1.1.0'
 Please check [codingufuture/puppet-test](https://github.com/codingfuture/puppet-test) for
 example of a complete infrastructure configuration and Vagrant provisioning.
 
-## Implicit resources created
+## Implicitly created resources
 
 ```yaml
 cfnetwork::describe_services:
@@ -236,6 +236,7 @@ A matching interface is one of:
       dependency. 'cffirehol' is used by default
 * 'export_resources' = `true`
       If true, resources are exported to PuppetDB as well
+* `service_face` = `'any'` - the interface to listen for client of configured services
 
 ### `cfnetwork::iface` type
 
@@ -275,7 +276,7 @@ A matching interface is one of:
 
 Describe service to use in firewall rules.
 
-* Title: `<iface>:<service>[:<tag>]`
+* Title: `<service>`
 * `server` - list of server-side ports in format "protocol/port", example: 'tcp/80', 'udp/53'
 * `client` = 'default' - list of client-side ports, 'default' - firewall-specific (all ports or 1024-65535)
 
