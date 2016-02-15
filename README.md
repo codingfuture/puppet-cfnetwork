@@ -21,7 +21,7 @@ mod 'fiddyspence/sysctl', '1.1.0'
 # make sure you check dependencies of dependencies too.
 ```
 
-# Examples
+## Examples
 
 Please check [codingufuture/puppet-test](https://github.com/codingfuture/puppet-test) for
 example of a complete infrastructure configuration and Vagrant provisioning.
