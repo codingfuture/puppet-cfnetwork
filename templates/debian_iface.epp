@@ -70,7 +70,7 @@ iface <%= $device %> <%= $iface_type %> <%= $method %>
 <% if $extra_addresses { any2array($extra_addresses).each |$a| { -%>
     up ip addr add <%= $a %> dev <%= $device %>
 <% } } -%>
-<% if $extra_routes { $extra_routes.each |$r| { 
+<% if $extra_routes { any2array($extra_routes).each |$r| { 
     if is_hash($r) { -%>
     up ip route add <%= $r[network] %> dev <%= $device %><% if $r[via] { %> via <%= $r[via] %><% } if $r[metric] { %> metric <%= $r[metric] %><% } -%>
 <%  } else { -%>
