@@ -99,8 +99,27 @@ class cfnetwork (
     
     #---
     case $dns {
-        '$recurse', '$serve': { $dns_servers = '127.0.0.1' }
-        default: { $dns_servers = $dns }
+        '$recurse', '$serve': {
+            $dns_servers = '127.0.0.1'
+            file_line { "/etc/resolv.conf/${dns_ip}":
+                ensure  => present,
+                path    => '/etc/resolv.conf',
+                line    => "nameserver 127.0.0.1",
+            }
+        }
+        default: {
+            $dns_servers = $dns
+
+            if $dns_servers {
+                any2array($dns_servers).each |$dns_ip| {
+                    file_line { "/etc/resolv.conf/${dns_ip}":
+                        ensure  => present,
+                        path    => '/etc/resolv.conf',
+                        line    => "nameserver ${dns_ip}",
+                    }
+                }
+            }
+        }
     }
     
     # Main iface
