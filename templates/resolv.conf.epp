@@ -1,0 +1,5 @@
+
+<% any2array($dns_servers).each |$srv| { -%>
+nameserver <%= $srv %>
+<% } -%>
+domain <%= $::trusted['domain'] %>
