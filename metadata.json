@@ -35,8 +35,8 @@
       "version_requirement": ">= 4.11.0"
     },
     {
-      "name": "fiddyspence-sysctl",
-      "version_requirement": ">= 1.1.0"
+      "name": "herculesteam/augeasproviders_sysctl",
+      "version_requirement": ">= 2.0.2"
     }
   ],
   "data_provider": "hiera"
