@@ -105,7 +105,7 @@ class cfnetwork (
     
     if $dns_servers {
         file { '/etc/resolv.conf':
-            mode => '0644',
+            mode    => '0644',
             content => epp('cfnetwork/resolv.conf.epp', {
                 dns_servers => $dns_servers,
             }),
