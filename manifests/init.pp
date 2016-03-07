@@ -153,8 +153,11 @@ class cfnetwork (
     }
     if $export_resources {
         @@cfnetwork::internal::exported_host {$::trusted['certname']:
-            host_aliases => [ $::trusted['hostname'] ],
-            ip           => $host_ip,
+            host_aliases  => [ $::trusted['hostname'] ],
+            ip            => $host_ip,
+            location      => $::cf_location,
+            location_pool => $::cf_location_pool,
+            
         }
     }
     

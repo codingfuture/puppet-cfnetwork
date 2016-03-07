@@ -3,6 +3,11 @@
 All notable changes to this project will be documented in this file. This
 project adheres to [Semantic Versioning](http://semver.org/).
 
+## [0.9.5]
+
+- Fixed issue of missing default parameters in DB of exported port/host.
+   It is a workaround for: [PUP-6014](https://tickets.puppetlabs.com/browse/PUP-6014)
+
 ## [0.9.4]
 
 - Fixed to fully generate resolv.conf overriding all dynamic changes
@@ -30,6 +35,7 @@ project adheres to [Semantic Versioning](http://semver.org/).
 
 Initial release
 
+[0.9.5]: https://github.com/codingfuture/puppet-cfnetwork/releases/tag/v0.9.5
 [0.9.4]: https://github.com/codingfuture/puppet-cfnetwork/releases/tag/v0.9.4
 [0.9.3]: https://github.com/codingfuture/puppet-cfnetwork/releases/tag/v0.9.3
 [0.9.2]: https://github.com/codingfuture/puppet-cfnetwork/releases/tag/v0.9.2

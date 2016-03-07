@@ -10,6 +10,9 @@ define cfnetwork::router_port (
             dst     => $dst,
             comment => $comment,
             tag     => [$::cf_location, $::cf_location_pool],
+            hostname => $::trusted['certname'],
+            location => $::cf_location,
+            location_pool => $::cf_location_pool,
         }
     }
     @cfnetwork_firewall_port { "router:${title}":
