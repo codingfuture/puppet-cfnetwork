@@ -8,9 +8,9 @@ global {
 
     status_ctl = on;
     paranoid = on;
-    min_ttl = 10m;          // Retain cached entries at least 15 minutes.
-    max_ttl = 1d;           // One week.
-    timeout = 10;           // Global timeout option (10 seconds).
+    min_ttl = 10m;
+    max_ttl = 1d;
+    timeout = 10;
     neg_ttl = 10;
 }
 
@@ -71,8 +71,10 @@ server {
 }
 
 source {
-    owner = localhost;
+    owner = *;
+    ttl = 600;
     serve_aliases = on;
+    authrec = off;
     file = "/etc/hosts";
 }
 

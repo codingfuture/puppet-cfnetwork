@@ -7,6 +7,7 @@ project adheres to [Semantic Versioning](http://semver.org/).
 
 - Fixed issue of missing default parameters in DB of exported port/host.
    It is a workaround for: [PUP-6014](https://tickets.puppetlabs.com/browse/PUP-6014)
+- Fixed pdnsd to serve /etc/hosts entries for all domains
 
 ## [0.9.4]
 
