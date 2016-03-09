@@ -93,7 +93,10 @@ class cfnetwork (
 
     #---
     case $::operatingsystem {
-        'Debian', 'Ubuntu': { include cfnetwork::debian }
+        'Debian', 'Ubuntu': {
+            include cfnetwork::debian
+            $dns_service_name = 'pdnsd'
+        }
         default: { err("Not supported OS ${::operatingsystem}") }
     }
     

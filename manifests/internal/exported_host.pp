@@ -9,6 +9,7 @@ define cfnetwork::internal::exported_host (
         host { $title:
             host_aliases => $host_aliases,
             ip           => $ip,
+            notify       => Service[$cfnetwork::dns_service_name],
         }
     }
 }
