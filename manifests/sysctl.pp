@@ -193,6 +193,12 @@ class cfnetwork::sysctl (
             command => '/sbin/modprobe bridge',
             unless  => '/sbin/lsmod | /bin/egrep "^bridge"',
         }
+        if versioncmp($::facts['kernelversion'], '3.18') > 0 {
+            exec {'load_br_netfilter_module':
+                command => '/sbin/modprobe br_netfilter',
+                unless  => '/sbin/lsmod | /bin/egrep "^br_netfilter"',
+            }
+        }
         sysctl{ 'net.bridge.bridge-nf-call-ip6tables':
                 value   => 0,
                 require => Exec['load_bridge_module'],
