@@ -52,6 +52,9 @@ define cfnetwork::iface (
         $netmask = $addr_split[1]
         validate_ip_address($ip)
         validate_integer($netmask)
+    } else {
+        $ip = undef
+        $netmask = undef
     }
 
     case $::operatingsystem {

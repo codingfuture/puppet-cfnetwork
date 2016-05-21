@@ -34,7 +34,9 @@ class cfnetwork::debian {
             cfnetwork::service_port { 'local:dns': }
             cfnetwork::service_port { "${cfnetwork::service_face}:dns": }
         }
-        default: {}
+        default: {
+            $pdns_listen = undef
+        }
     }
     
     if $pdns_listen {
