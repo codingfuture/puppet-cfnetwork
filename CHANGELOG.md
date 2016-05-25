@@ -3,6 +3,9 @@
 All notable changes to this project will be documented in this file. This
 project adheres to [Semantic Versioning](http://semver.org/).
 
+## [0.9.8]
+- Updated supported OS list
+
 ## [0.9.7]
 
 - Minor fixes for strict mode
@@ -45,6 +48,7 @@ project adheres to [Semantic Versioning](http://semver.org/).
 
 Initial release
 
+[0.9.8]: https://github.com/codingfuture/puppet-cfnetwork/releases/tag/v0.9.8
 [0.9.7]: https://github.com/codingfuture/puppet-cfnetwork/releases/tag/v0.9.7
 [0.9.6]: https://github.com/codingfuture/puppet-cfnetwork/releases/tag/v0.9.6
 [0.9.5]: https://github.com/codingfuture/puppet-cfnetwork/releases/tag/v0.9.5
