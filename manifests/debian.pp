@@ -59,6 +59,8 @@ class cfnetwork::debian {
             }),
             notify  => Service['pdnsd'],
         }
+        
+        Service['pdnsd'] -> File['/etc/resolv.conf']
     } else {
         package { 'pdnsd': ensure => absent }
     }
