@@ -3,6 +3,9 @@
 All notable changes to this project will be documented in this file. This
 project adheres to [Semantic Versioning](http://semver.org/).
 
+## [0.9.10]
+- Fixed minor rare issue with new Puppet 4.6.x release
+
 ## [0.9.9]
 - Added an explicit dependency of resolv.conf on pdnsd
 
@@ -51,6 +54,7 @@ project adheres to [Semantic Versioning](http://semver.org/).
 
 Initial release
 
+[0.9.10]: https://github.com/codingfuture/puppet-cfnetwork/releases/tag/v0.9.10
 [0.9.9]: https://github.com/codingfuture/puppet-cfnetwork/releases/tag/v0.9.9
 [0.9.8]: https://github.com/codingfuture/puppet-cfnetwork/releases/tag/v0.9.8
 [0.9.7]: https://github.com/codingfuture/puppet-cfnetwork/releases/tag/v0.9.7

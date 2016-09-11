@@ -1,7 +1,7 @@
 class cfnetwork::sysctl::params {
     $enable_bridge_filter = !$::cfnetwork::is_router
     $optimize_10gbe = $::cfnetwork::optimize_10gbe
-    $mem_bytes = $::memory['system']['total_bytes']
+    $mem_bytes = $::facts['memory']['system']['total_bytes']
 
     $file_max = $mem_bytes / 1024 / 1024 / 4 * 256 # 256 per 4MB
     $somaxconn = $file_max / 32 # 2048 per 1GB
