@@ -1,4 +1,5 @@
 
+# Please see README
 define cfnetwork::iface (
     $device = $title,
     $method = 'static',
@@ -13,39 +14,39 @@ define cfnetwork::iface (
     $bridge_ports = undef,
     $bridge_stp = undef,
     $bridge_fd = undef,
-    
+
     $bond_slaves = undef,
     $bond_primary = undef,
     $bond_mode = undef,
     $bond_miimon = undef,
-    
+
     $preup = undef,
     $up = undef,
     $down = undef,
     $postdown = undef,
-    
+
     $ipv6 = false,
     $force_public = false,
-    
+
     $debian_template = 'cfnetwork/debian_iface.epp',
     $custom_args = undef,
 ) {
     include stdlib
-    
+
     case $method {
         'static': {}
         'dhcp': {}
         default: { fail("Unknown \$method ${method}") }
     }
-    
+
     if $device == 'lo' {
         fail('Do not define local interface manually')
     }
-    
+
     if $title == 'local' {
         fail('"local" iface name is reserved for lo device')
     }
-    
+
     if $address {
         $addr_split = split($address, '/')
         $ip = $addr_split[0]
@@ -93,7 +94,7 @@ define cfnetwork::iface (
         }
         default: { err("Not supported OS ${::operatingsystem}") }
     }
-    
+
     @cfnetwork_firewall_iface { $title:
         ensure          => present,
         device          => $device,
@@ -104,7 +105,7 @@ define cfnetwork::iface (
         gateway         => $gateway,
         force_public    => $force_public,
     }
-    
+
     if $dns_servers {
         cfnetwork::client_port { 'any:dns:cfnetwork':
             dst => $dns_servers

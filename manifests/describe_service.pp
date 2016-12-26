@@ -1,4 +1,5 @@
 
+# Please see README
 define cfnetwork::describe_service (
     $server,
     $client = 'default',

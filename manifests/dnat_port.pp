@@ -1,3 +1,5 @@
+
+# Please see README
 define cfnetwork::dnat_port (
     # $title = "inface/outface:service[:optionalTag]"
     $src = undef,
@@ -8,14 +10,14 @@ define cfnetwork::dnat_port (
 ) {
     if $::cfnetwork::export_resources {
         @@cfnetwork::internal::exported_port { "${::fqdn}:dnat:${title}":
-            src     => $src,
-            dst     => $dst,
-            to_dst  => $to_dst,
-            to_port => $to_port,
-            comment => $comment,
-            tag     => [$::cf_location, $::cf_location_pool],
-            hostname => $::trusted['certname'],
-            location => $::cf_location,
+            src           => $src,
+            dst           => $dst,
+            to_dst        => $to_dst,
+            to_port       => $to_port,
+            comment       => $comment,
+            tag           => [$::cf_location, $::cf_location_pool],
+            hostname      => $::trusted['certname'],
+            location      => $::cf_location,
             location_pool => $::cf_location_pool,
         }
     }

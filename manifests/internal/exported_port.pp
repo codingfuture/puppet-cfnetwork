@@ -1,8 +1,10 @@
+
+# Please see README
 define cfnetwork::internal::exported_port (
     # $title = "fqdn:port_type:iface:service"
-    $hostname/* = $::trusted['certname']*/,
-    $location/* = $::cf_location*/,
-    $location_pool/* = $::cf_location_pool*/,
+    $hostname, # = $::trusted['certname']
+    $location, # = $::cf_location
+    $location_pool, # = $::cf_location_pool
     $src = undef,
     $dst = undef,
     $user = undef,

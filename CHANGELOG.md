@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file. This
 project adheres to [Semantic Versioning](http://semver.org/).
 
+## [0.9.11]
+- Automatic newer puppet-lint fixes
+- Fixed puppet-lint and metadata-json-lint warnings
+
 ## [0.9.10]
 - Fixed minor rare issue with new Puppet 4.6.x release
 
@@ -54,6 +58,7 @@ project adheres to [Semantic Versioning](http://semver.org/).
 
 Initial release
 
+[0.9.11]: https://github.com/codingfuture/puppet-cfnetwork/releases/tag/v0.9.11
 [0.9.10]: https://github.com/codingfuture/puppet-cfnetwork/releases/tag/v0.9.10
 [0.9.9]: https://github.com/codingfuture/puppet-cfnetwork/releases/tag/v0.9.9
 [0.9.8]: https://github.com/codingfuture/puppet-cfnetwork/releases/tag/v0.9.8

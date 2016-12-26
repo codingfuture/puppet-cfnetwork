@@ -1,3 +1,5 @@
+
+# Please see README
 define cfnetwork::router_port (
     # $title = "inface/outface:service"
     $src= undef,
@@ -6,12 +8,12 @@ define cfnetwork::router_port (
 ) {
     if $::cfnetwork::export_resources {
         @@cfnetwork::internal::exported_port { "${::fqdn}:router:${title}":
-            src     => $src,
-            dst     => $dst,
-            comment => $comment,
-            tag     => [$::cf_location, $::cf_location_pool],
-            hostname => $::trusted['certname'],
-            location => $::cf_location,
+            src           => $src,
+            dst           => $dst,
+            comment       => $comment,
+            tag           => [$::cf_location, $::cf_location_pool],
+            hostname      => $::trusted['certname'],
+            location      => $::cf_location,
             location_pool => $::cf_location_pool,
         }
     }

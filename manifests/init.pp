@@ -99,13 +99,13 @@ class cfnetwork (
         }
         default: { err("Not supported OS ${::operatingsystem}") }
     }
-    
+
     #---
     case $dns {
         '$recurse', '$serve': { $dns_servers = '127.0.0.1' }
         default: { $dns_servers = $dns }
     }
-    
+
     if $dns_servers {
         file { '/etc/resolv.conf':
             mode    => '0644',
@@ -114,7 +114,7 @@ class cfnetwork (
             }),
         }
     }
-    
+
     # Main iface
     #---
     if $main {
@@ -131,7 +131,7 @@ class cfnetwork (
             }
         )
     }
-    
+
     # additional ifaces
     #---
     if $ifaces {
@@ -140,7 +140,7 @@ class cfnetwork (
             $ifaces
         )
     }
-    
+
     #---
     if $main and
         (($main['method'] == 'static') or ($main['method'] == undef))
@@ -149,7 +149,7 @@ class cfnetwork (
     } else {
         $host_ip = $::networking['ip'] # fact
     }
-    
+
     host {$::trusted['certname']:
         host_aliases => [ $::trusted['hostname'] ],
         ip           => $host_ip,
@@ -160,10 +160,10 @@ class cfnetwork (
             ip            => $host_ip,
             location      => $::cf_location,
             location_pool => $::cf_location_pool,
-            
+
         }
     }
-    
+
     #---
     cfnetwork::describe_service { 'dns':
         server => [ 'tcp/53', 'udp/53' ],
@@ -184,7 +184,7 @@ class cfnetwork (
         client  => 'any',
         comment => 'Use to open all TCP and UDP ports (e.g. for local)',
     }
-    
+
     # Predefined ports
     #---
     if $dnat_ports {
@@ -221,7 +221,7 @@ class cfnetwork (
             $describe_services
         )
     }
-    
+
     if $firewall_provider {
         # dynamic bi-directional dep
         include $firewall_provider

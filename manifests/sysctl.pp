@@ -1,4 +1,5 @@
 
+# Please see README
 class cfnetwork::sysctl (
     $enable_bridge_filter = $cfnetwork::sysctl::params::enable_bridge_filter, # module needs to be loaded
     $rp_filter = 1,
@@ -48,7 +49,7 @@ class cfnetwork::sysctl (
 )  inherits cfnetwork::sysctl::params {
     include stdlib
     assert_private();
-    
+
     # Spoof protection (reverse-path filter)
     # Turn on Source Address Verification in all interfaces to
     # prevent some spoofing attacks    
@@ -56,7 +57,7 @@ class cfnetwork::sysctl (
             value => $rp_filter}
     sysctl{ 'net.ipv4.conf.all.rp_filter':
             value => $rp_filter}
-    
+
     # This disables TCP Window Scaling (http://lkml.org/lkml/2008/2/5/167),
     # and is not recommended.
     sysctl{ 'net.ipv4.tcp_syncookies':
@@ -66,7 +67,7 @@ class cfnetwork::sysctl (
     sysctl{ 'net.ipv4.conf.default.proxy_arp': value => 0 }
     sysctl{ 'net.ipv4.conf.all.proxy_arp': value => 0 }
 
-    
+
     $enable_routing = $cfnetwork::is_router ? { true => 1, default => 0 };
     sysctl{ 'net.ipv4.conf.default.forwarding':
             value => $enable_routing}
@@ -76,8 +77,8 @@ class cfnetwork::sysctl (
             value => $enable_routing}
     sysctl{ 'net.ipv6.conf.all.forwarding':
             value => $enable_routing}
-    
-    
+
+
     # ICMP security
     #---
     # Ignore ICMP broadcast
@@ -86,7 +87,7 @@ class cfnetwork::sysctl (
     # Ignore bogus ICMP errors
     sysctl{ 'net.ipv4.icmp_ignore_bogus_error_responses':
             value => 1}
-    
+
     # Do not accept ICMP redirects (prevent MITM attacks)
     sysctl{ 'net.ipv4.conf.default.accept_redirects':
             value => 0}
@@ -108,7 +109,7 @@ class cfnetwork::sysctl (
             value => 0}
     sysctl{ 'net.ipv4.conf.all.accept_source_route':
             value => 0}
-    
+
     # IPv6 specific
     sysctl{ 'net.ipv6.conf.default.router_solicitations':
             value => 0}
@@ -127,7 +128,7 @@ class cfnetwork::sysctl (
 
     # Optimize network
     #---
-    
+
     # yep, socket related
     sysctl{ 'fs.file-max':
             value => $file_max}
@@ -143,11 +144,11 @@ class cfnetwork::sysctl (
             value => $rmem_default}
     sysctl{ 'net.core.wmem_default':
             value => $wmem_default}
-    
+
     # do not choke on not enough ports
     sysctl{ 'net.ipv4.ip_local_port_range':
             value => $ip_local_port_range}
-    
+
     # Basic TCP tuning
     sysctl{ 'net.ipv4.tcp_tw_recycle':
             value => $tcp_tw_recycle}
@@ -182,7 +183,7 @@ class cfnetwork::sysctl (
     sysctl{ 'net.ipv4.tcp_wmem':
             value     => "4096 ${tcp_wmem_default} ${tcp_wmem_max}" }
 
-    
+
     # Avoid firewall on bridge traffic - make a router instead,
     # if you really need.
     #
@@ -211,14 +212,14 @@ class cfnetwork::sysctl (
                 value   => 0,
                 require => Exec['load_bridge_module'] }
     }
-    
+
     # Netfilter optimization
     #---
     exec {'load_conntrack_module':
         command => '/sbin/modprobe nf_conntrack_ipv4',
         unless  => '/sbin/lsmod | /bin/egrep "^nf_conntrack_ipv4"',
     }
-    
+
     if $nf_conntrack_max {
         sysctl{ 'net.netfilter.nf_conntrack_max':
             value   => $nf_conntrack_max,
@@ -231,7 +232,7 @@ class cfnetwork::sysctl (
             require => Exec['load_conntrack_module'],
         }
     }
-    
+
     sysctl{ 'net.netfilter.nf_conntrack_generic_timeout':
             value   => $nf_conntrack_generic_timeout,
             require => Exec['load_conntrack_module'],
