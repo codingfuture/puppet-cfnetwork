@@ -2,11 +2,16 @@
 # Please see README
 define cfnetwork::dnat_port (
     # $title = "inface/outface:service[:optionalTag]"
-    $src = undef,
-    $dst = undef,
-    $to_dst = undef,
-    $to_port = undef,
-    $comment = undef,
+    Optional[Variant[Array[String[1]], String[1]]]
+        $src = undef,
+    Optional[Variant[Array[String[1]], String[1]]]
+        $dst = undef,
+    Optional[String[1]]
+        $to_dst = undef,
+    Optional[String[1]]
+        $to_port = undef,
+    Optional[String[1]]
+        $comment = undef,
 ) {
     if $::cfnetwork::export_resources {
         @@cfnetwork::internal::exported_port { "${::fqdn}:dnat:${title}":

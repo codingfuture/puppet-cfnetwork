@@ -1,35 +1,61 @@
 
 # Please see README
 define cfnetwork::iface (
-    $device = $title,
-    $method = 'static',
-    $address = undef,
-    $extra_addresses = undef,
-    $extra_routes = undef,
-    $gateway = undef,
+    String[1]
+        $device = $title,
+    Enum['static', 'dhcp']
+        $method = 'static',
+    Optional[String[1]]
+        $address = undef,
+    Optional[Variant[String[1], Array[String[1]]]]
+        $extra_addresses = undef,
+    Optional[Variant[String[1], Array[String[1]]]]
+        $extra_routes = undef,
+    Optional[String[1]]
+        $gateway = undef,
 
-    $dns_servers = undef,
-    $domain = undef,
+    Optional[Variant[String[1], Array[String[1]]]]
+        $dns_servers = undef,
+    Optional[String[1]]
+        $domain = undef,
 
-    $bridge_ports = undef,
-    $bridge_stp = undef,
-    $bridge_fd = undef,
+    Optional[Variant[String[1], Array[String[1]]]]
+        $bridge_ports = undef,
+    Boolean
+        $bridge_stp = false,
+    Integer[0]
+        $bridge_fd = 0,
 
-    $bond_slaves = undef,
-    $bond_primary = undef,
-    $bond_mode = undef,
-    $bond_miimon = undef,
+    Optional[Variant[String[1], Array[String[1]]]]
+        $bond_slaves = undef,
+    Optional[String[1]]
+        $bond_primary = undef,
+    Optional[Variant[
+        Enum['balance-rr', 'active-backup', 'balance-xor', 'broadcast',
+                '802.3ad', 'balance-tlb', 'balance-alb'],
+        Integer[0, 6]]]
+        $bond_mode = undef,
+    Optional[Integer[0]]
+        $bond_miimon = undef,
 
-    $preup = undef,
-    $up = undef,
-    $down = undef,
-    $postdown = undef,
+    Optional[Variant[String[1], Array[String[1]]]]
+        $preup = undef,
+    Optional[Variant[String[1], Array[String[1]]]]
+        $up = undef,
+    Optional[Variant[String[1], Array[String[1]]]]
+        $down = undef,
+    Optional[Variant[String[1], Array[String[1]]]]
+        $postdown = undef,
 
-    $ipv6 = false,
-    $force_public = false,
+    Boolean
+        $ipv6 = false,
+    Boolean
+        $force_public = false,
 
-    $debian_template = 'cfnetwork/debian_iface.epp',
-    $custom_args = undef,
+    String[1]
+        $debian_template = 'cfnetwork/debian_iface.epp',
+    Data
+        $custom_args = undef,
 ) {
     include stdlib
 
@@ -60,6 +86,11 @@ define cfnetwork::iface (
 
     case $::operatingsystem {
         'Debian', 'Ubuntu': {
+            $q_bridge_stp = $bridge_stp ? {
+                true => 'on',
+                default => 'off',
+            }
+
             file { "/etc/network/interfaces.d/${title}":
                 owner   => root,
                 group   => root,
@@ -77,7 +108,7 @@ define cfnetwork::iface (
                     dns_servers     => $dns_servers,
                     domain          => $domain,
                     bridge_ports    => $bridge_ports,
-                    bridge_stp      => $bridge_stp,
+                    bridge_stp      => $q_bridge_stp,
                     bridge_fd       => $bridge_fd,
                     bond_slaves     => $bond_slaves,
                     bond_primary    => $bond_primary,

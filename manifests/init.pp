@@ -75,19 +75,32 @@
 # Copyright 2016 Andrey Galkin
 #
 class cfnetwork (
-    $main = undef,
-    $dns = undef,
-    $ifaces = undef,
-    $describe_services = undef,
-    $service_ports = undef,
-    $client_ports = undef,
-    $dnat_ports = undef,
-    $router_ports = undef,
-    $is_router = false,
-    $optimize_10gbe = false, # TODO: facter
-    $service_face = 'any',
-    $firewall_provider = 'cffirehol',
-    $export_resources = true,
+    Optional[Hash]
+        $main = undef,
+    Optional[Variant[String[1], Array[String[1]]]]
+        $dns = undef,
+    Optional[Hash[String[1], Hash]]
+        $ifaces = undef,
+    Optional[Hash[String[1], Hash]]
+        $describe_services = undef,
+    Optional[Hash[String[1], Hash]]
+        $service_ports = undef,
+    Optional[Hash[String[1], Hash]]
+        $client_ports = undef,
+    Optional[Hash[String[1], Hash]]
+        $dnat_ports = undef,
+    Optional[Hash[String[1], Hash]]
+        $router_ports = undef,
+    Boolean
+        $is_router = false,
+    Boolean
+        $optimize_10gbe = false, # TODO: facter
+    String[1]
+        $service_face = 'any',
+    String[1]
+        $firewall_provider = 'cffirehol',
+    Boolean
+        $export_resources = true,
 ) {
     include cfnetwork::sysctl
 

@@ -6,6 +6,7 @@ project adheres to [Semantic Versioning](http://semver.org/).
 ## [0.9.11]
 - Automatic newer puppet-lint fixes
 - Fixed puppet-lint and metadata-json-lint warnings
+- Enforced strict parameter types
 
 ## [0.9.10]
 - Fixed minor rare issue with new Puppet 4.6.x release

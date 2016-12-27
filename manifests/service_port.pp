@@ -2,9 +2,12 @@
 # Please see README
 define cfnetwork::service_port (
     # $title = "iface:service"
-    $src= undef,
-    $dst = undef,
-    $comment = undef,
+    Optional[Variant[Array[String[1]], String[1]]]
+        $src= undef,
+    Optional[Variant[Array[String[1]], String[1]]]
+        $dst = undef,
+    Optional[String[1]]
+        $comment = undef,
 ) {
     if $::cfnetwork::export_resources {
         @@cfnetwork::internal::exported_port { "${::fqdn}:service:${title}":

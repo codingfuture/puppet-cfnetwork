@@ -1,51 +1,51 @@
 
 # Please see README
 class cfnetwork::sysctl (
-    $enable_bridge_filter = $cfnetwork::sysctl::params::enable_bridge_filter, # module needs to be loaded
-    $rp_filter = 1,
-    $netdev_max_backlog =  $cfnetwork::sysctl::params::netdev_max_backlog,
-    $tcp_fin_timeout = 3,
-    $tcp_keepalive_time = 300,
-    $tcp_keepalive_probes = 3,
-    $tcp_keepalive_intvl = 15,
-    $tcp_max_syn_backlog = 4096,
-    $tcp_no_metrics_save = 1,
-    $tcp_rfc1337 = 1,
-    $tcp_sack = 1,
-    $tcp_slow_start_after_idle = 0,
-    $tcp_synack_retries = 2,
-    $tcp_syncookies = 1,
-    $tcp_timestamps = 1,
-    $tcp_tw_recycle = 1,
-    $tcp_tw_reuse = 1,
-    $tcp_window_scaling = 1,
-    $file_max = $cfnetwork::sysctl::params::file_max, # 256 per 4MB
-    $somaxconn = $cfnetwork::sysctl::params::somaxconn, # 2048 per 1GB
-    $ip_local_port_range = '2000 65535',
+    Boolean $enable_bridge_filter = $cfnetwork::sysctl::params::enable_bridge_filter, # module needs to be loaded
+    Integer $rp_filter = 1,
+    Integer $netdev_max_backlog =  $cfnetwork::sysctl::params::netdev_max_backlog,
+    Integer $tcp_fin_timeout = 3,
+    Integer $tcp_keepalive_time = 300,
+    Integer $tcp_keepalive_probes = 3,
+    Integer $tcp_keepalive_intvl = 15,
+    Integer $tcp_max_syn_backlog = 4096,
+    Integer $tcp_no_metrics_save = 1,
+    Integer $tcp_rfc1337 = 1,
+    Integer $tcp_sack = 1,
+    Integer $tcp_slow_start_after_idle = 0,
+    Integer $tcp_synack_retries = 2,
+    Integer $tcp_syncookies = 1,
+    Integer $tcp_timestamps = 1,
+    Integer $tcp_tw_recycle = 1,
+    Integer $tcp_tw_reuse = 1,
+    Integer $tcp_window_scaling = 1,
+    Integer $file_max = $cfnetwork::sysctl::params::file_max, # 256 per 4MB
+    Integer $somaxconn = $cfnetwork::sysctl::params::somaxconn, # 2048 per 1GB
+    String[1] $ip_local_port_range = '2000 65535',
     # no need to overkill for UDP and others
-    $rmem_max = 212992,
-    $wmem_max = 212992,
-    $rmem_default = $rmem_max,
-    $wmem_default = $wmem_max,
+    Integer $rmem_max = 212992,
+    Integer $wmem_max = 212992,
+    Integer $rmem_default = $rmem_max,
+    Integer $wmem_default = $wmem_max,
     # TCP
-    $tcp_rmem_max = $cfnetwork::sysctl::params::tcp_rmem_max,
-    $tcp_wmem_max = $cfnetwork::sysctl::params::tcp_wmem_max,
-    $tcp_rmem_default = $cfnetwork::sysctl::params::tcp_rmem_default,
-    $tcp_wmem_default = $cfnetwork::sysctl::params::tcp_wmem_default,
-    $nf_conntrack_max = undef, # kernel does good autoconfig
-    $nf_conntrack_expect_max = undef, # kernel does good autoconfig
-    $nf_conntrack_generic_timeout = 600,
-    $nf_conntrack_tcp_timeout_syn_sent = 20,
-    $nf_conntrack_tcp_timeout_syn_recv = 10,
-    $nf_conntrack_tcp_timeout_established = 1200,
-    $nf_conntrack_tcp_timeout_last_ack = 5,
-    $nf_conntrack_tcp_timeout_time_wait = 3,
-    $nf_conntrack_tcp_loose = 0,
-    $nf_conntrack_tcp_be_liberal = 0,
-    $nf_conntrack_tcp_max_retrans = 3,
-    $nf_conntrack_udp_timeout = 30,
-    $nf_conntrack_udp_timeout_stream = 60,
-    $nf_conntrack_icmp_timeout = 30,
+    Integer $tcp_rmem_max = $cfnetwork::sysctl::params::tcp_rmem_max,
+    Integer $tcp_wmem_max = $cfnetwork::sysctl::params::tcp_wmem_max,
+    Integer $tcp_rmem_default = $cfnetwork::sysctl::params::tcp_rmem_default,
+    Integer $tcp_wmem_default = $cfnetwork::sysctl::params::tcp_wmem_default,
+    Optional[Integer] $nf_conntrack_max = undef, # kernel does good autoconfig
+    Optional[Integer] $nf_conntrack_expect_max = undef, # kernel does good autoconfig
+    Integer $nf_conntrack_generic_timeout = 600,
+    Integer $nf_conntrack_tcp_timeout_syn_sent = 20,
+    Integer $nf_conntrack_tcp_timeout_syn_recv = 10,
+    Integer $nf_conntrack_tcp_timeout_established = 1200,
+    Integer $nf_conntrack_tcp_timeout_last_ack = 5,
+    Integer $nf_conntrack_tcp_timeout_time_wait = 3,
+    Integer $nf_conntrack_tcp_loose = 0,
+    Integer $nf_conntrack_tcp_be_liberal = 0,
+    Integer $nf_conntrack_tcp_max_retrans = 3,
+    Integer $nf_conntrack_udp_timeout = 30,
+    Integer $nf_conntrack_udp_timeout_stream = 60,
+    Integer $nf_conntrack_icmp_timeout = 30,
 )  inherits cfnetwork::sysctl::params {
     include stdlib
     assert_private();

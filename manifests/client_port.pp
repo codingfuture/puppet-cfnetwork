@@ -2,11 +2,16 @@
 # Please see README
 define cfnetwork::client_port (
     # $title = "iface:service[:optionalTag]"
-    $src = undef,
-    $dst = undef,
-    $user = undef,
-    $group = undef,
-    $comment = undef,
+    Optional[Variant[Array[String[1]], String[1]]]
+        $src = undef,
+    Optional[Variant[Array[String[1]], String[1]]]
+        $dst = undef,
+    Optional[Variant[Array[String[1]], String[1]]]
+        $user = undef,
+    Optional[Variant[Array[String[1]], String[1]]]
+        $group = undef,
+    Optional[String[1]]
+        $comment = undef,
 ) {
     if $::cfnetwork::export_resources {
         @@cfnetwork::internal::exported_port { "${::fqdn}:client:${title}":
