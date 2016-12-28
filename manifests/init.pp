@@ -91,6 +91,8 @@ class cfnetwork (
         $dnat_ports = undef,
     Optional[Hash[String[1], Hash]]
         $router_ports = undef,
+    Optional[Hash[String[1], Hash]]
+        $ipsets = undef,
     Boolean
         $is_router = false,
     Boolean
@@ -198,8 +200,26 @@ class cfnetwork (
         comment => 'Use to open all TCP and UDP ports (e.g. for local)',
     }
 
-    # Predefined ports
+    # Statically configured resources
     #---
+    cfnetwork::ipset { 'whitelist':
+        type    => 'net',
+        addr    => [],
+        dynamic => true,
+    }
+    cfnetwork::ipset { 'blacklist':
+        type    => 'net',
+        addr    => [],
+        dynamic => true,
+    }
+
+    if $ipsets {
+        create_resources(
+            cfnetwork::ipset,
+            $ipsets
+        )
+    }
+
     if $dnat_ports {
         create_resources(
             cfnetwork::dnat_port,

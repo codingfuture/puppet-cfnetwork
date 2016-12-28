@@ -21,46 +21,40 @@ DNAT/Router ports: '{port_type}:{inface}/{outface}:{service}'
         isnamevar
     end
     
-    newproperty(:src, :array_matching => :all) do
-        desc "Source address to match against, if set"
-        
-        validate do |value|
-            value = munge value
-            ip = IPAddr.new(value) # may raise ArgumentError
+    {
+        :src => 'Source address to match against, if set',
+        :dst => 'Destination address to match against, if set'
+    }.each do |p, d|
+        newproperty(p, :array_matching => :all) do
+            desc d
+            
+            validate do |value|
+                ips = value.split(':', 2)
+                
+                if ips[0] == 'ipset'
+                    unless ips[1] =~ /^[a-z][a-z0-9_]*$/
+                        raise ArgumentError, "%s is not valid ipset name" % value
+                    end
+                    return true
+                end
+                
+                value = munge value
+                ip = IPAddr.new(value) # may raise ArgumentError
 
-            unless ip.ipv4? or ip.ipv6?
-                raise ArgumentError, "%s is not a valid IPv4 or IPv6 address" % value
+                unless ip.ipv4? or ip.ipv6?
+                    raise ArgumentError, "%s is not a valid IPv4 or IPv6 address" % value
+                end
             end
-        end
-        
-        munge do |value|
-            begin
-                ip = IPAddr.new(value)
-                return value
-            rescue
-                return Resolv.getaddress value
-            end
-        end
-    end
-
-    newproperty(:dst, :array_matching => :all) do
-        desc "Destination address to match against, if set"
-        
-        validate do |value|
-            value = munge value
-            ip = IPAddr.new(value) # may raise ArgumentError
-
-            unless ip.ipv4? or ip.ipv6?
-                raise ArgumentError, "%s is not a valid IPv4 or IPv6 address" % value
-            end
-        end
-        
-        munge do |value|
-            begin
-                ip = IPAddr.new(value)
-                return value
-            rescue
-                return Resolv.getaddress value
+            
+            munge do |value|
+                return value if value.split(':', 2)[0] == 'ipset'
+                
+                begin
+                    ip = IPAddr.new(value)
+                    return value
+                rescue
+                    return Resolv.getaddress value
+                end
             end
         end
     end

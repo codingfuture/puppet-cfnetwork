@@ -26,6 +26,13 @@ example of a complete infrastructure configuration and Vagrant provisioning.
 ## Implicitly created resources
 
 ```yaml
+cfnetwork::ipsets:
+    blacklist:
+        type: net
+        dynamic: true
+    whitelist:
+        type: net
+        dynamic: true
 cfnetwork::describe_services:
     'dns':
         server: [ 'tcp/53', 'udp/53' ]
@@ -111,17 +118,18 @@ Examples:
         # no gateway
     }
     cfnetwork::describe_service { myservice':
-        server: ['tcp/123', 'udp/234']
+        server => ['tcp/123', 'udp/234']
     }
     cfnetwork::describe_service { myhttp':
-        server: ['tcp/80', 'tcp/443']
+        server => ['tcp/80', 'tcp/443']
     }
     # allow incoming for myservice on auto-detected dmz1 and dmz2 ifaces
     # note: still, please consider using explicit ifaces
     cfnetwork::service_port { 'any:myservice':
-        src: [
+        src => [
             '128.0.1.0/24',
             '128.0.2.0/24',
+            'ipset:myclients',
         ]
     }
     # allow client request on main interface
@@ -135,6 +143,17 @@ Examples:
     # DNAT external to dmz2
     cfnetwork::dnat_port { 'main/dmz2:myhttp':
         to_dst => 'dmz2server',
+    }
+    cfnetwork::ipset { 'myclients':
+        addr => [
+            '128.0.3.0/24',
+        ]
+    }
+    cfnetwork::ipset { 'otherset':
+        addr => [
+            '128.0.4.0/24',
+            'ipset:myclients',
+        ]
     }
 ```
     
@@ -173,6 +192,7 @@ The same using Hiera:
             src:
                 - '128.0.1.0/24'
                 - '128.0.2.0/24'
+                - 'ipset:myclients'
     cfnetwork::client_ports:
         'main:myhttp:tag1': {}
         'main:myhttp:tag2': {}
@@ -181,6 +201,14 @@ The same using Hiera:
         'dmz1/dmz2:myhttp': {}
     cfnetwork::dnat_ports:
         'main/dmz2:myhttp': {}
+    cfnetwork::ipsets:
+        myclients:
+            addr:
+                - '128.0.3.0/24'
+        otherset:
+            addr:
+                - '128.0.4.0/24'
+                - 'ipset:myclients'
 ```
 
 ### 'any' interface matching rules
@@ -197,6 +225,17 @@ A matching interface is one of:
 * All not routable private networks will be dropped for incoming and outgoing packets
 * Automatic SNAT to `address` enabled for all valid destinations with unroutable source address
 * Default policy is DROP. For private interfaces default policy is REJECT
+
+### ipset notes
+
+* Main name pattern: `[a-z][a-z0-9_]`
+* Referred as "ipset:<main_name' (e.g. `ipset:admins`)
+* Allowed in any `src/dst/to_dst` of port types
+* Allowed in `addr` of other ipsets
+* Additional entries can be defined with partial definition:
+    * Partial name pattern: `<main_name>:[a-z][a-z0-9_]`
+    * It's not allowed to refer to partial names
+    * Note: `type` attribute must match the main definition
 
 
 ## Classes and resources types
@@ -268,6 +307,19 @@ A matching interface is one of:
     private range, what is useful in cloud environments with suboptimal NAT.
 * `debian_template` = `'cfnetwork/debian_iface.epp'` - supply own template for non-standard interface setup
 * `custom_args` - provide custom arguments to custom `$debian_template`
+
+### `cfnetwork::ipset` type
+
+Define `ipset` item.
+
+* Title:
+    * Main name: `[a-z][a-z0-9_]*` (e.g. "blacklist")
+    * Partial additions to the main list: `<main_name>:[a-z][a-z0-9_]*` (e.g. "blacklist:attackers", "blacklist:spam")
+* `$addr` - mixes list of IPv4 & IPv6 addresses and other ipsets in form `ipset:<main_name>`
+* `$type = 'net'` - either `ip` or `net`. See `man ipset`
+* `$dynamic = false` - notify firewall that additional addresses can be added dynamically (e.g. dynamic list of attackers)
+* `$comment = undef` - arbitrary comment
+
 
 ### `cfnetwork::describe_service` type
 

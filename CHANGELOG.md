@@ -4,6 +4,7 @@ All notable changes to this project will be documented in this file. This
 project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [0.9.11]
+- Implemented support for ipsets
 - Automatic newer puppet-lint fixes
 - Fixed puppet-lint and metadata-json-lint warnings
 - Enforced strict parameter types
