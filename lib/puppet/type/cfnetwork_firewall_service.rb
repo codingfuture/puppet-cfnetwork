@@ -1,3 +1,7 @@
+#
+# Copyright 2016 (c) Andrey Galkin
+#
+
 Puppet::Type.newtype(:cfnetwork_firewall_service) do
     desc "DO NOT USE DIRECTLY. Notify firewall of available service definitions."
     
