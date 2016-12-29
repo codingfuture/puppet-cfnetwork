@@ -12,7 +12,7 @@ define cfnetwork::dnat_port (
         $dst = undef,
     Optional[String[1]]
         $to_dst = undef,
-    Optional[String[1]]
+    Optional[Integer[1, 65535]]
         $to_port = undef,
     Optional[String[1]]
         $comment = undef,
