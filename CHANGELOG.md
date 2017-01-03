@@ -3,6 +3,15 @@
 All notable changes to this project will be documented in this file. This
 project adheres to [Semantic Versioning](http://semver.org/).
 
+## [0.10.0]
+- Much better support for IPv6 now
+- Small redesign of cfnetwork::iface parameters
+    - `extra_routes` & `extra_addresses` are deprecated now
+    - `address` - can list multiple addresses now
+    - `gateway` - can list multiple entries (one for IPv4 and one for IPv6)
+    - `routes` - any additional routes
+- Fixed `routes`/`extra_routes` paramter type for Struct case
+
 ## [0.9.11]
 - Implemented support for ipsets
 - Automatic newer puppet-lint fixes
@@ -60,6 +69,7 @@ project adheres to [Semantic Versioning](http://semver.org/).
 
 Initial release
 
+[0.10.0]: https://github.com/codingfuture/puppet-cfnetwork/releases/tag/v0.10.0
 [0.9.11]: https://github.com/codingfuture/puppet-cfnetwork/releases/tag/v0.9.11
 [0.9.10]: https://github.com/codingfuture/puppet-cfnetwork/releases/tag/v0.9.10
 [0.9.9]: https://github.com/codingfuture/puppet-cfnetwork/releases/tag/v0.9.9

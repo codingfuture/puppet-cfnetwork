@@ -97,12 +97,12 @@ Examples:
     class { 'cfnetwork':
       main => {
         device  => 'eth0',
-        address => '128.0.0.2/24',
-        gateway => '128.0.0.1',
-        extra_addresses => [
+        address => [
+            '128.0.0.2/24',
             '128.0.0.3/24',
             '128.0.0.4/24',
         ],
+        gateway => '128.0.0.1',
       },
       dns => ['8.8.8.8', '8.8.4.4'],
       is_router => true,
@@ -165,11 +165,11 @@ The same using Hiera:
         - cfnetwork
     cfnetwork::main:
         device: eth0
-        address: '128.0.0.2/24'
-        gateway: '128.0.0.1'
-        extra_addresses:
+        address:
+            - '128.0.0.2/24'
             - '128.0.0.3/24'
             - '128.0.0.4/24'
+        gateway: '128.0.0.1'
     cfnetwork::dns:
         - '8.8.8.8'
         - '8.8.4.4'
@@ -278,15 +278,18 @@ A matching interface is one of:
 
 * `device` =` $title` - system interface device name, e.g. 'eth0'
 * `method` = 'static' - address setup method ('static' of 'dhcp'). Please avoid DHCP as possible.
-* `address` - primary IP address
-* `extra_addresses` - additional address, if any
-* `extra_routes` - additional routes, if any
+* `address` - list of IPv4 and IPv6 addresses with /netprefix
+    * (string)
+    * (array)
+* `routes` - additional routes, if any
     * (string) - maps to `network` in hash below
     * (hash)
         * `network` - network address to route
         * `via` - gateway to use, if any
         * `metric` - metric to set, if any
 * `gateway` - default gateway to setup. Only one iface must have one.
+    * (string) either IPv4 or IPv6 address
+    * (array) one IPv4 and one IPv6 address
 * `dns_servers` - DNS servers to use. Only one iface should have one.
 * `domain` - DNS search domain, auto-detect by default
 * Bridge setup:

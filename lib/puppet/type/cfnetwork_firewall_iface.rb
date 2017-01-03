@@ -104,7 +104,7 @@ Puppet::Type.newtype(:cfnetwork_firewall_iface) do
         end
     end
     
-    newproperty(:gateway) do
+    newproperty(:gateway, :array_matching => :all) do
         desc "Default gateway IP address"
         
         validate do |value|

@@ -161,10 +161,11 @@ class cfnetwork (
     }
 
     #---
-    if $main and
-        (($main['method'] == 'static') or ($main['method'] == undef))
-    {
-        $host_ip = split($main['address'],'/')[0]
+    if defined(Cfnetwork::Iface['main']) {
+        $host_ip = pick_default(
+            cf_get_iface_address(Cfnetwork::Iface['main'])[0],
+            $::networking['ip']
+        )
     } else {
         $host_ip = $::networking['ip'] # fact
     }
