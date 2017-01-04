@@ -11,6 +11,8 @@ project adheres to [Semantic Versioning](http://semver.org/).
     - `gateway` - can list multiple entries (one for IPv4 and one for IPv6)
     - `routes` - any additional routes
 - Fixed `routes`/`extra_routes` paramter type for Struct case
+- Improved handling of DHCP interfaces
+- Fixed to use IPv6 "auto" method, if 'static' is missing IP address
 
 ## [0.9.11]
 - Implemented support for ipsets

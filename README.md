@@ -59,8 +59,12 @@ cfnetwork::client_ports:
         user: 'pdnsd'
         comment: 'only in $serve or $recurse mode'
     'any:dns:cfnetwork':
-        dst => $cfnetwork::dns
+        dst: $cfnetwork::dns
         comment: 'unless in $serve or $recurse mode'
+    '{iface}:dhcp:cfnetwork':
+        comment: "for IPv4 ifaces with method=dhcp"
+    '{iface}:dhcpv6:cfnetwork':
+        comment: "for IPv6 ifaces with method=dhcp"
 cfnetwork::router_ports:
     # for each cfnetwork::dnat_port
 ```

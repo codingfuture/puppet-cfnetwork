@@ -83,11 +83,7 @@ define cfnetwork::iface (
 ) {
     include stdlib
 
-    case $method {
-        'static': {}
-        'dhcp': {}
-        default: { fail("Unknown \$method ${method}") }
-    }
+    $is_dhcp = ($method == 'dhcp')
 
     if $device == 'lo' {
         fail('Do not define local interface manually')
@@ -168,20 +164,45 @@ define cfnetwork::iface (
             if $method == 'static' {
                 $ipv6_only = (size($address4) == 0)
                 $fact_ipv6 = (size($address6) > 0)
+                $fact_ipv4 = false
             } else {
                 $ipv6_only = false
                 $fact_ipv6 = true
+                $fact_ipv4 = true
             }
         }
         'only': {
             $ipv6_only = true
             $fact_ipv6 = true
+            $fact_ipv4 = false
         }
         default: {
             $ipv6_only = false
             $fact_ipv6 = $ipv6
+            $fact_ipv4 = true
         }
     }
+
+    # link-local routes
+    #---
+    $link_local_address = $fact_ipv6 ? {
+        true => ['FE80::/10'],
+        default => []
+    }
+
+    $link_local_routes = ($fact_ipv4 ? {
+        true => $is_dhcp ? {
+            true => ['169.254.0.0/16', '0.0.0.0/0'],
+            default => []
+        },
+        default => []
+    }) + ($fact_ipv6 ? {
+        true => ['FE80::/10'] + ($is_dhcp ? {
+            true => ['::/0'],
+            default => []
+        }),
+        default => []
+    })
 
     # Config OS
     #---
@@ -190,10 +211,6 @@ define cfnetwork::iface (
             $q_bridge_stp = $bridge_stp ? {
                 true => 'on',
                 default => 'off',
-            }
-            $common_args = {
-                device          => $device,
-                method          => $method,
             }
             $unique_args = {
                 dns_servers     => $dns_servers,
@@ -218,9 +235,16 @@ define cfnetwork::iface (
                 default => {},
             }
 
+            $method_ipv6 = (($method == 'static') and !$ip6) ? {
+                true => 'auto',
+                default => $method,
+            }
+
             $iface_content = [
                 $ipv6_only ? {
-                    false => epp($debian_template, $common_args + $unique_args + {
+                    false => epp($debian_template, $unique_args + {
+                        device          => $device,
+                        method          => $method,
                         iface_type      => 'inet',
                         address         => $ip4,
                         netmask         => $netmask4,
@@ -231,7 +255,9 @@ define cfnetwork::iface (
                     default => ''
                 },
                 $fact_ipv6 ? {
-                    true => epp($debian_template, $common_args + $unique_args_ipv6 + {
+                    true => epp($debian_template, $unique_args_ipv6 + {
+                        device          => $device,
+                        method          => $method_ipv6,
                         iface_type      => 'inet6',
                         address         => $ip6,
                         netmask         => $netmask6,
@@ -260,8 +286,8 @@ define cfnetwork::iface (
         device          => $device,
         method          => $method,
         address         => $all_addresses[0],
-        extra_addresses => $all_addresses[1, -1],
-        extra_routes    => $all_routes,
+        extra_addresses => $all_addresses[1, -1] + $link_local_address,
+        extra_routes    => $all_routes + $link_local_routes,
         gateway         => $gateway,
         force_public    => $force_public,
     }
@@ -269,6 +295,19 @@ define cfnetwork::iface (
     if $dns_servers {
         cfnetwork::client_port { 'any:dns:cfnetwork':
             dst => $dns_servers
+        }
+    }
+
+    if $is_dhcp {
+        if $fact_ipv4 {
+            cfnetwork::client_port { "${title}:dhcp:cfnetwork":
+                src => '0.0.0.0/0'
+            }
+        }
+        if $fact_ipv6 {
+            cfnetwork::client_port { "${title}:dhcpv6:cfnetwork":
+                src => '::/0'
+            }
         }
     }
 }
