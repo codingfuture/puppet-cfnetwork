@@ -11,11 +11,13 @@ module Puppet::Parser::Functions
         v6 = []
         
         data = args[0]
+        raise(ArgumentError, "Data array must be provided") unless data.is_a? Array
         
         if args.size == 2
             Puppet::Parser::Functions.function(:dig)
             
             path = args[1]
+            raise(ArgumentError, "Path must be an array") unless path.is_a? Array
             
             data.each do |v|
                 addr = function_dig([v, path])

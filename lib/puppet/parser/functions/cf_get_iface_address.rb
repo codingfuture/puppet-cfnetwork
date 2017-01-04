@@ -4,7 +4,7 @@
 
 
 module Puppet::Parser::Functions
-    newfunction(:cf_get_iface_address,  :type => :rvalue) do |args|
+    newfunction(:cf_get_iface_address,  :type => :rvalue, :arity => 1) do |args|
         iface = args[0]
         raise(ArgumentError, "Invalid interface") unless iface
         
