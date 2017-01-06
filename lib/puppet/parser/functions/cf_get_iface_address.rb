@@ -8,11 +8,14 @@ module Puppet::Parser::Functions
         iface = args[0]
         raise(ArgumentError, "Invalid interface") unless iface
         
-        iface = findresource(iface.to_s)
-        addr = iface['address']
+        iface_resource = findresource(iface.to_s)
+        
+        raise(ArgumentError, "Resource not found for #{iface}") unless iface_resource
+        
+        addr = iface_resource['address']
         addr = [addr] unless addr.is_a? Array
         
-        eaddr = iface['extra_addresses']
+        eaddr = iface_resource['extra_addresses']
         eaddr = [eaddr] unless eaddr.is_a? Array
         
         ret = (addr + eaddr).map do |v|
