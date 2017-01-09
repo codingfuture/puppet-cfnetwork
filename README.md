@@ -282,6 +282,7 @@ A matching interface is one of:
 
 * `device` =` $title` - system interface device name, e.g. 'eth0'
 * `method` = 'static' - address setup method ('static' of 'dhcp'). Please avoid DHCP as possible.
+    Note: it is allowed to specify 'net/prefix' address as firewall hint for private interfaces
 * `address` - list of IPv4 and IPv6 addresses with /netprefix
     * (string)
     * (array)

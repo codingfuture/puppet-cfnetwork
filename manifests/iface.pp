@@ -115,7 +115,10 @@ define cfnetwork::iface (
     #[$address4, $address6] = cf_sort_ipv($all_addresses)
     #[$routes4, $routes6] = cf_sort_ipv($all_routes)
 
-    $address46 = cf_sort_ipv($all_addresses)
+    $address46 = cf_sort_ipv($is_dhcp ? {
+        true    => [],
+        default => $all_addresses
+    })
     $address4 = $address46[0]
     $address6 = $address46[1]
 
