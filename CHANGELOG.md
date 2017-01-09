@@ -6,6 +6,7 @@ project adheres to [Semantic Versioning](http://semver.org/).
 ## [0.10.1]
 - Minor improvement for error reporting of internal features
 - Allowed to specify expected DHCP address range as firewall hint
+- Fixed to allow DNS queries to all destinations if DNS servers are not set
 
 ## [0.10.0]
 - Much better support for IPv6 now

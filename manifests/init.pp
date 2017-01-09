@@ -132,6 +132,11 @@ class cfnetwork (
                 dns_servers => $dns_servers,
             }),
         }
+        cfnetwork::client_port { 'any:dns:cfnetwork':
+            dst => $dns_servers
+        }
+    } else {
+        cfnetwork::client_port { 'any:dns:cfnetwork': }
     }
 
     # Main iface

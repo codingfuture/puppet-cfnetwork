@@ -295,12 +295,6 @@ define cfnetwork::iface (
         force_public    => $force_public,
     }
 
-    if $dns_servers {
-        cfnetwork::client_port { 'any:dns:cfnetwork':
-            dst => $dns_servers
-        }
-    }
-
     if $is_dhcp {
         if $fact_ipv4 {
             cfnetwork::client_port { "${title}:dhcp:cfnetwork":
