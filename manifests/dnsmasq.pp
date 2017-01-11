@@ -35,6 +35,7 @@ class cfnetwork::dnsmasq(
     if $dns_listen {
         $dns_service = 'dnsmasq'
         $dns_user = $dns_service
+        $dns_systemd_unit = "/etc/systemd/system/${dns_service}.service"
 
         # Serve all exported hosts in location
         Cfnetwork::Internal::Exported_host  <<| location == $::cf_location |>>
@@ -44,6 +45,9 @@ class cfnetwork::dnsmasq(
         package { 'dnsmasq-base': } ->
         package { 'dnsmasq':
             ensure => absent,
+        } ->
+        cfnetwork::client_port { "any:dns:${dns_service}":
+            user=> $dns_user
         } ->
         file { '/etc/dnsmasq.conf':
             mode    => '0600',
@@ -55,21 +59,18 @@ class cfnetwork::dnsmasq(
             }),
             notify  => Service[$dns_service],
         } ->
-        file { "/etc/systemd/system/${dns_service}.service":
+        file { $dns_systemd_unit:
             mode    => '0644',
             content => epp('cfnetwork/dnsmasq.service', {
                 after => ''
             }),
-            notify  => Exec['cfnetwork-systemd-reload'],
         } ->
+        Exec['cfnetwork-systemd-reload'] ->
         service { $dns_service:
-            ensure => running,
-            enable => true,
+            ensure   => running,
+            enable   => true,
+            provider => 'systemd',
         } ->
-        cfnetwork::client_port { "any:dns:${dns_service}":
-            user=> $dns_user
-        }
-
-        Service[$dns_service] -> File['/etc/resolv.conf']
+        File['/etc/resolv.conf']
     }
 }
