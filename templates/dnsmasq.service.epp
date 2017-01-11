@@ -1,5 +1,6 @@
 <% |
-    String $after
+    String $after,
+    String $memlimit,
 | -%>
 [Unit]
 Description=CF: dnsmasq
@@ -11,6 +12,11 @@ ExecStart=/usr/sbin/dnsmasq -k --conf-file=/etc/dnsmasq.conf
 ExecReload=/bin/kill -HUP $MAINPID
 Restart=on-failure
 RestartSec=5
+
+CPUAccounting=true
+CPUShares=100
+MemoryAccounting=true
+MemoryLimit=<%= $memlimit %>
 
 [Install]
 WantedBy=multi-user.target

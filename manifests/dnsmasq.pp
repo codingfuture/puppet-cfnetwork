@@ -11,6 +11,10 @@ class cfnetwork::dnsmasq(
         ],
     Boolean
         $dnssec = true,
+    String[1]
+        $memlimit = '8M',
+    String
+        $custom_config = '',
 ) {
     assert_private();
 
@@ -53,16 +57,18 @@ class cfnetwork::dnsmasq(
             mode    => '0600',
             owner   => $dns_user,
             content => epp('cfnetwork/dnsmasq.conf', {
-                listen   => $dns_listen,
-                upstream => $upstream,
-                dnssec   => $dnssec,
+                listen        => $dns_listen,
+                upstream      => $upstream,
+                dnssec        => $dnssec,
+                custom_config => $custom_config,
             }),
             notify  => Service[$dns_service],
         } ->
         file { $dns_systemd_unit:
             mode    => '0644',
             content => epp('cfnetwork/dnsmasq.service', {
-                after => ''
+                after    => '',
+                memlimit => $memlimit,
             }),
         } ->
         Exec['cfnetwork-systemd-reload'] ->

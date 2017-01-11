@@ -387,6 +387,8 @@ Tune automatically installed `dnsmasq`, if `$local` or `$serve`.
 
 * `$upstream = ['8.8.8.8', '8.8.4.4']` - upstream servers, Public Google DNS by default
 * `$dnssec = true` - if true, enable DNSSEC validation on dnsmasq
+* `$memlimit = '8M'` - systemd memory limit for dnsmasq service
+* `$custom_config = ''` - any arbitrary text to include in dnsmasq.conf
 
 ### `cfnetwork::sysctl` class
 
