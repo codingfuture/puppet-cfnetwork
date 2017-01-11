@@ -7,6 +7,9 @@ project adheres to [Semantic Versioning](http://semver.org/).
 - Minor improvement for error reporting of internal features
 - Allowed to specify expected DHCP address range as firewall hint
 - Fixed to allow DNS queries to all destinations if DNS servers are not set
+- Changed to use dnsmasq instead of abandoned pdnsd
+    NOTE: dnsmasq has no recursive resolver
+- Renamed '$recurse' to '$local' to better reflect dnsmasq behavior
 
 ## [0.10.0]
 - Much better support for IPv6 now

@@ -51,16 +51,18 @@ cfnetwork::describe_services:
         comment: "Use to open all TCP and UDP ports (e.g. for local)"
 cfnetwork::service_ports:
     'local:dns': {}
-        comment: 'only in $serve or $recurse mode'
+        comment: 'only in $serve or $local mode'
     "${cfnetwork::service_face}:dns":
         comment: 'only in $serve mode'
 cfnetwork::client_ports:
-    'main:dns:pdnsd':
-        user: 'pdnsd'
-        comment: 'only in $serve or $recurse mode'
+    'any:dns:dnsmasq':
+        user: 'dnsmasq'
+        comment: 'only in $serve or $local mode'
     'any:dns:cfnetwork':
         dst: $cfnetwork::dns
-        comment: 'unless in $serve or $recurse mode'
+        comment: 'unless in $serve or $local mode'
+    'any:dns:cfnetwork':
+        comment: 'only if no DNS servers are configured'
     '{iface}:dhcp:cfnetwork':
         comment: "for IPv4 ifaces with method=dhcp"
     '{iface}:dhcpv6:cfnetwork':
@@ -87,7 +89,7 @@ times with no name clash and not need for explicit virtual resource processing.
 The module is designed without actual firewall implementation to serve as abstract API
 for plug&play firewall rules definition. For example:
 
-* this module automatically enables DNS clients and services, if '$recurse'
+* this module automatically enables DNS clients and services, if '$local'
     or '$serve' is configured
 * **[cfauth]** module automatically enables incoming SSH connections on configured ports
     from admin hosts
@@ -253,7 +255,7 @@ A matching interface is one of:
 * `dns`
       DNS server list. Can be defined directly with one of cfnetwork::iface.
       Special values:
-      - '$recurse' - Setup own recourse DNS cache
+      - '$local' - Setup own DNS cache
       - '$serve' - Same as '$recure', but also serve clients on $service_face
 * 'ifaces'
       Create cfnetwork::iface resources, if set
@@ -379,6 +381,12 @@ Note: implicit cfnetwork::route_port is defined - no need to define one manually
 * `to_port` - (int) re-assign port, if needed
 * `comment` - arbitrary comment
 
+### `cfnetwork::dnsmasq` class
+
+Tune automatically installed `dnsmasq`, if `$local` or `$serve`.
+
+* `$upstream = ['8.8.8.8', '8.8.4.4']` - upstream servers, Public Google DNS by default
+* `$dnssec = true` - if true, enable DNSSEC validation on dnsmasq
 
 ### `cfnetwork::sysctl` class
 

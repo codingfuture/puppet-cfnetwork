@@ -1,0 +1,30 @@
+<% |
+    String[1] $listen,
+    Array[String[1]] $upstream,
+    Boolean $dnssec,
+| -%>
+no-resolv
+no-poll
+no-negcache
+bogus-priv
+domain-needed
+<% if $listen != '0.0.0.0' { -%>
+listen-address=<%= $listen %>
+<% } -%>
+local-ttl=600
+log-async
+max-cache-ttl=1800
+expand-hosts
+
+user=dnsmasq
+group=nogroup
+
+<% $upstream.each |$v| { -%>
+server=<%= $v %>
+<% } -%>
+
+<% if $dnssec { -%>
+# https://data.iana.org/root-anchors/root-anchors.xml
+trust-anchor=.,19036,8,2,49AAC11D7B6F6446702E54A1607371607A1A41855200FD2CE1CDDE32F24E8FB5
+dnssec
+<% } -%>

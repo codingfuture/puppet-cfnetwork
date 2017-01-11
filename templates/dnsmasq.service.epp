@@ -1,0 +1,16 @@
+<% |
+    String $after
+| -%>
+[Unit]
+Description=CF: dnsmasq
+After=network.target <%= $after %>
+Wants=network.target <%= $after %>
+
+[Service]
+ExecStart=/usr/sbin/dnsmasq -k --conf-file=/etc/dnsmasq.conf
+ExecReload=/bin/kill -HUP $MAINPID
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target

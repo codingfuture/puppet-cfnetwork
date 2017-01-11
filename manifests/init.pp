@@ -21,8 +21,8 @@
 # * `dns`
 #       DNS server list. Can be defined directly with one of cfnetwork::iface.
 #       Special values:
-#       - '$recurse' - Setup own recourse DNS cache
-#       - '$serve' - Same as '$recure', but also serve clients on $service_face
+#       - '$local' - Setup own DNS cache
+#       - '$serve' - Same as '$local', but also serve clients on $service_face
 #
 # * 'ifaces'
 #       Create cfnetwork::iface resources, if set
@@ -114,14 +114,14 @@ class cfnetwork (
     case $::operatingsystem {
         'Debian', 'Ubuntu': {
             include cfnetwork::debian
-            $dns_service_name = 'pdnsd'
+            $dns_service_name = 'dnsmasq'
         }
         default: { err("Not supported OS ${::operatingsystem}") }
     }
 
     #---
     case $dns {
-        '$recurse', '$serve': { $dns_servers = '127.0.0.1' }
+        '$local', '$recurse', '$serve': { $dns_servers = '127.0.0.1' }
         default: { $dns_servers = $dns }
     }
 
@@ -268,5 +268,11 @@ class cfnetwork (
     if $firewall_provider {
         # dynamic bi-directional dep
         include $firewall_provider
+    }
+
+    #---
+    exec { 'cfnetwork-systemd-reload':
+        command     => '/bin/systemctl daemon-reload',
+        refreshonly => true,
     }
 }
