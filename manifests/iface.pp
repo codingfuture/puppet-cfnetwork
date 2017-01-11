@@ -243,7 +243,7 @@ define cfnetwork::iface (
                     true    => 'auto',
                     default => $method
                 },
-                default => !$ip6 ? {
+                default => (!$ip6) ? {
                     true    => 'auto',
                     default => $method
                 }
