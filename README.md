@@ -312,7 +312,11 @@ A matching interface is one of:
 * `up` list of arbitrary commands to execute after interface is up
 * `down` list of arbitrary commands to execute before interface goes down
 * `postdown` list of arbitrary commands to execute after interface gets down
-* `ipv6` = false - if false, forcibly disables IPv6 on the interface
+* `ipv6 = false` control IPv6 support on the interface
+    * `false` - disable IPv6
+    * `true` - enable IPv6
+    * `'auto'` - enable IPv6, if explicitly configured
+    * `'only'` - enable IPv6 and disable IPv4
 * `force_public` - firewall-specific. Force mark the interface as public, even if it has address from
     private range, what is useful in cloud environments with suboptimal NAT.
 * `debian_template` = `'cfnetwork/debian_iface.epp'` - supply own template for non-standard interface setup

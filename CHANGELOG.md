@@ -10,6 +10,7 @@ project adheres to [Semantic Versioning](http://semver.org/).
 - Changed to use dnsmasq instead of abandoned pdnsd
     NOTE: dnsmasq has no recursive resolver
 - Renamed '$recurse' to '$local' to better reflect dnsmasq behavior
+- Disabling IPv6 DHCP, if IPv6 = 'auto'
 
 ## [0.10.0]
 - Much better support for IPv6 now

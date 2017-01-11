@@ -234,13 +234,19 @@ define cfnetwork::iface (
             }
 
             $unique_args_ipv6 = $ipv6_only ? {
-                true => $unique_args,
-                default => {},
+                true    => $unique_args,
+                default => {}
             }
 
-            $method_ipv6 = (($method == 'static') and !$ip6) ? {
-                true => 'auto',
-                default => $method,
+            $method_ipv6 = $is_dhcp ? {
+                true    => ($ipv6 == 'auto') ? {
+                    true    => 'auto',
+                    default => $method
+                },
+                default => !$ip6 ? {
+                    true    => 'auto',
+                    default => $method
+                }
             }
 
             $iface_content = [
