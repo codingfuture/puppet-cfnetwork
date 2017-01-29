@@ -8,7 +8,7 @@ and system firewall. The module is designed to be used with Hiera-like data prov
 ## Technical Support
 
 * [Example configuration](https://github.com/codingfuture/puppet-test)
-* Commercial support: [support@codingfuture.net](mailto:support@codingfuture.net)
+* Free & Commercial support: [support@codingfuture.net](mailto:support@codingfuture.net)
 
 ## Setup
 
