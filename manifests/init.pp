@@ -275,4 +275,7 @@ class cfnetwork (
         command     => '/bin/systemctl daemon-reload',
         refreshonly => true,
     }
+
+    #---
+    anchor { 'cfnetwork:firewall': }
 }

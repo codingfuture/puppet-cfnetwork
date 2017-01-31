@@ -69,6 +69,8 @@ cfnetwork::client_ports:
         comment: "for IPv6 ifaces with method=dhcp"
 cfnetwork::router_ports:
     # for each cfnetwork::dnat_port
+anchor:
+    'cfnetwork:firewall'
 ```
 
 ## Concept
@@ -243,6 +245,10 @@ A matching interface is one of:
     * It's not allowed to refer to partial names
     * Note: `type` attribute must match the main definition
 
+### Dependency on configured firewall
+
+Please depend on `Anchor['cfnetwork:firewall']`, if you need new firewal configuration before
+some processing.
 
 ## Classes and resources types
 
