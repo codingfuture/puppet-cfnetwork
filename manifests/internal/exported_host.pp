@@ -11,7 +11,7 @@ define cfnetwork::internal::exported_host (
     $location, # = $::cf_location
     $location_pool, # = $::cf_location_pool
 ) {
-    if $title != $::trusted['certname'] {
+    if $title != $::trusted['certname'] and !defined(Host[$title]) {
         host { $title:
             host_aliases => $host_aliases,
             ip           => $ip,

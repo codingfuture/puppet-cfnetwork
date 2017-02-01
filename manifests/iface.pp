@@ -301,6 +301,7 @@ define cfnetwork::iface (
         force_public    => $force_public,
     }
 
+    #---
     if $is_dhcp {
         if $fact_ipv4 {
             cfnetwork::client_port { "${title}:dhcp:cfnetwork":
@@ -310,6 +311,31 @@ define cfnetwork::iface (
         if $fact_ipv6 {
             cfnetwork::client_port { "${title}:dhcpv6:cfnetwork":
                 src => '::/0'
+            }
+        }
+    }
+
+    #---
+    $all_addresses.each |$index, $host_ip_mask| {
+        $host_ip = $host_ip_mask.split('/')[0]
+
+        if $index == 0 {
+            $host_prefix = $title
+        } else {
+            $host_prefix = "${title}${index}"
+        }
+
+        host { "${host_prefix}.${::trusted['certname']}":
+            host_aliases => [ "${host_prefix}.${::trusted['hostname']}" ],
+            ip           => $host_ip,
+        }
+
+        if $cfnetwork::export_resources {
+            @@cfnetwork::internal::exported_host { "${host_prefix}.${::trusted['certname']}":
+                host_aliases  => [ "${host_prefix}.${::trusted['hostname']}" ],
+                ip            => $host_ip,
+                location      => $::cf_location,
+                location_pool => $::cf_location_pool,
             }
         }
     }

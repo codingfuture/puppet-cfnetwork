@@ -2,7 +2,7 @@
 # Copyright 2017 (c) Andrey Galkin
 #
 
-
+# TODO: remove deprecated
 module Puppet::Parser::Functions
     newfunction(:cf_get_iface_address,  :type => :rvalue, :arity => 1) do |args|
         iface = args[0]

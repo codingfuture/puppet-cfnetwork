@@ -250,6 +250,7 @@ A matching interface is one of:
 Please depend on `Anchor['cfnetwork:firewall']`, if you need new firewal configuration before
 some processing.
 
+
 ## Classes and resources types
 
 
@@ -467,6 +468,12 @@ Self-explanatory sysctl settings with their defaults, unless specially noted:
 * `$nf_conntrack_udp_timeout_stream` = `60`
     *Note: it can be too aggressive*
 * `$nf_conntrack_icmp_timeout` = `30`
+
+### Public API
+
+* `cf_get_bind_address(arg)` - get bind address for specified arg, where:
+    * 'iface' - first address of Cfnetwork::Iface[iface] resource
+    * 'iface:N' - address #N of Cfnetwork::Iface[iface] resource
 
 [cfauth]: https://github.com/codingfuture/puppet-cfauth
 [cfsystem]: https://github.com/codingfuture/puppet-cfsystem

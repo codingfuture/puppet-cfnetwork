@@ -5,6 +5,9 @@ project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [0.10.2]
 - Andded 'cfnetwork:firewall' anchor
+- Added a new 'cf_get_bind_address' API to properly retrieve iface bind address
+- Deprecated 'cf_get_iface_address'
+- Added automatic creation of host entries for each interface and additional addresses
 
 ## [0.10.1]
 - Minor improvement for error reporting of internal features

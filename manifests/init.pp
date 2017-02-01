@@ -168,7 +168,7 @@ class cfnetwork (
     #---
     if defined(Cfnetwork::Iface['main']) {
         $host_ip = pick_default(
-            cf_get_iface_address(Cfnetwork::Iface['main'])[0],
+            cf_get_bind_address('main'),
             $::networking['ip']
         )
     } else {
@@ -185,7 +185,6 @@ class cfnetwork (
             ip            => $host_ip,
             location      => $::cf_location,
             location_pool => $::cf_location_pool,
-
         }
     }
 
