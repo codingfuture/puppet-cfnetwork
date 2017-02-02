@@ -3,7 +3,7 @@
 All notable changes to this project will be documented in this file. This
 project adheres to [Semantic Versioning](http://semver.org/).
 
-## [0.10.2]
+## [0.11.0]
 - Andded 'cfnetwork:firewall' anchor
 - Added a new 'cf_get_bind_address' API to properly retrieve iface bind address
 - Deprecated 'cf_get_iface_address'
@@ -86,7 +86,7 @@ project adheres to [Semantic Versioning](http://semver.org/).
 
 Initial release
 
-[0.10.2]: https://github.com/codingfuture/puppet-cfnetwork/releases/tag/v0.10.2
+[0.11.0]: https://github.com/codingfuture/puppet-cfnetwork/releases/tag/v0.11.0
 [0.10.1]: https://github.com/codingfuture/puppet-cfnetwork/releases/tag/v0.10.1
 [0.10.0]: https://github.com/codingfuture/puppet-cfnetwork/releases/tag/v0.10.0
 [0.9.11]: https://github.com/codingfuture/puppet-cfnetwork/releases/tag/v0.9.11
