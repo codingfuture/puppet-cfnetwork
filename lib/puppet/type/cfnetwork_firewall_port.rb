@@ -57,8 +57,13 @@ DNAT/Router ports: '{port_type}:{inface}/{outface}:{service}'
                     begin
                         return Resolv.getaddress value
                     rescue
-                        # leave DNS as-is
-                        value
+                        begin
+                            # re-read /etc/hosts
+                            return Resolv.new.getaddress value
+                        rescue
+                            # leave DNS as-is
+                            return value
+                        end
                     end
                 end
             end
@@ -112,13 +117,18 @@ or use firewall $custom_headers for advanced configuration
                 unless value =~ /^([a-zA-Z0-9]+)(\.[a-zA-Z0-9]+)*$/
                     raise ArgumentError, "%s is not valid DNS entry or IP4/6 address" % value
                 end
-                
-                begin
-                    return Resolv.getaddress value
-                rescue
-                    # leave DNS as-is
-                    value
-                end
+                    
+                    begin
+                        return Resolv.getaddress value
+                    rescue
+                        begin
+                            # re-read /etc/hosts
+                            return Resolv.new.getaddress value
+                        rescue
+                            # leave DNS as-is
+                            return value
+                        end
+                    end
             end
         end
     end

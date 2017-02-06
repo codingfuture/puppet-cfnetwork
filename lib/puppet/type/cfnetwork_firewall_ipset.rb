@@ -52,8 +52,13 @@ Puppet::Type.newtype(:cfnetwork_firewall_ipset) do
                     begin
                         return Resolv.getaddress value
                     rescue
-                        # leave DNS as-is
-                        value
+                        begin
+                            # re-read /etc/hosts
+                            return Resolv.new.getaddress value
+                        rescue
+                            # leave DNS as-is
+                            return value
+                        end
                     end
                 end
             end
