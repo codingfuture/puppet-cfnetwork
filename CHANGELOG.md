@@ -13,6 +13,7 @@ project adheres to [Semantic Versioning](http://semver.org/).
 - Added fetch of exported host entries used in firewall
 - Changed to allow failed to resolve DNS entries in firewall config
     not to break bootstrap
+- Changed prune of unknown /etc/hosts entries
 
 ## [0.10.1]
 - Minor improvement for error reporting of internal features
