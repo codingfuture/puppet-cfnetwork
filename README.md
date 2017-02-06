@@ -286,6 +286,7 @@ some processing.
 * 'export_resources' = `true`
       If true, resources are exported to PuppetDB as well
 * `service_face` = `'any'` - the interface to listen for client of configured services
+* `hosts = undef` - arbitrary definition of custom /etc/hosts entries based on `host` type
 
 ### `cfnetwork::iface` type
 

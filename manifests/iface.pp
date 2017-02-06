@@ -328,6 +328,7 @@ define cfnetwork::iface (
         host { "${host_prefix}.${::trusted['certname']}":
             host_aliases => [ "${host_prefix}.${::trusted['hostname']}" ],
             ip           => $host_ip,
+            before       => Anchor['cfnetwork:pre-firewall']
         }
 
         if $cfnetwork::export_resources {
