@@ -38,6 +38,12 @@ define cfnetwork::dnat_port (
         to_port => $to_port,
         comment => $comment,
     }
+    cfnetwork::internal::fetch_hosts { "dnat:${title}":
+        src    => $src,
+        dst    => $dst,
+        to_dst => $to_dst,
+        before => Anchor['cfnetwork:pre-firewall'],
+    }
 
     if $to_port {
         $title_split = split($title, ':')

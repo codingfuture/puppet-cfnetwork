@@ -39,16 +39,22 @@ class cfnetwork (
     #---
     case $::operatingsystem {
         'Debian', 'Ubuntu': {
-            include cfnetwork::debian
             $dns_service_name = 'dnsmasq'
+            include cfnetwork::debian
         }
         default: { err("Not supported OS ${::operatingsystem}") }
     }
 
     #---
     case $dns {
-        '$local', '$recurse', '$serve': { $dns_servers = '127.0.0.1' }
-        default: { $dns_servers = $dns }
+        '$local', '$recurse', '$serve': {
+            $dns_servers = '127.0.0.1'
+            $local_dns = true
+        }
+        default: {
+            $dns_servers = $dns
+            $local_dns = false
+        }
     }
 
     if $dns_servers {
@@ -101,11 +107,33 @@ class cfnetwork (
         $host_ip = $::networking['ip'] # fact
     }
 
+    #---
+    resources { 'host':
+        purge => true,
+    }
+    host { 'localhost4':
+        host_aliases => [
+            'localhost',
+            'localhost.localdomain',
+            'localhost4.localdomain4'
+        ],
+        ip           => '127.0.0.1',
+    }
+    host { 'localhost6':
+        host_aliases => [
+            'localhost',
+            'localhost.localdomain',
+            'localhost6.localdomain6'
+        ],
+        ip           => '::1',
+    }
+
     host {$::trusted['certname']:
         host_aliases => [ $::trusted['hostname'] ],
         ip           => $host_ip,
         before       => Anchor['cfnetwork:pre-firewall']
     }
+
     if $export_resources {
         @@cfnetwork::internal::exported_host {$::trusted['certname']:
             host_aliases  => [ $::trusted['hostname'] ],

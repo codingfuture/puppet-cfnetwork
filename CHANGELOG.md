@@ -10,6 +10,9 @@ project adheres to [Semantic Versioning](http://semver.org/).
 - Added automatic creation of host entries for each interface and additional addresses
 - Added cfnetwork::hosts parameter
 - Added cfnetwork:pre-firewall anchor
+- Added fetch of exported host entries used in firewall
+- Changed to allow failed to resolve DNS entries in firewall config
+    not to break bootstrap
 
 ## [0.10.1]
 - Minor improvement for error reporting of internal features

@@ -30,4 +30,9 @@ define cfnetwork::service_port (
         dst     => $dst,
         comment => $comment,
     }
+    cfnetwork::internal::fetch_hosts { "service:${title}":
+        src    => $src,
+        dst    => $dst,
+        before => Anchor['cfnetwork:pre-firewall'],
+    }
 }

@@ -35,15 +35,14 @@ class cfnetwork::dnsmasq(
     }
 
     package { 'pdnsd': ensure => absent }
+    $dns_service = $cfnetwork::dns_service_name
 
     if $dns_listen {
-        $dns_service = 'dnsmasq'
         $dns_user = $dns_service
         $dns_systemd_unit = "/etc/systemd/system/${dns_service}.service"
 
         # Serve all exported hosts in location
         Cfnetwork::Internal::Exported_host  <<| location == $::cf_location |>>
-            -> Service[$dns_service]
 
         Package['pdnsd'] ->
         package { 'dnsmasq-base': } ->
@@ -78,5 +77,11 @@ class cfnetwork::dnsmasq(
             provider => 'systemd',
         } ->
         File['/etc/resolv.conf']
+    } else {
+        service { $dns_service:
+            ensure   => stopped,
+            enable   => false,
+            provider => 'systemd',
+        }
     }
 }

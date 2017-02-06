@@ -16,7 +16,10 @@ define cfnetwork::internal::exported_host (
             host_aliases => $host_aliases,
             ip           => $ip,
             before       => Anchor['cfnetwork:pre-firewall'],
-            notify       => Service[$cfnetwork::dns_service_name],
+        }
+
+        if $cfnetwork::local_dns {
+            Host[$title] ~> Service[$cfnetwork::dns_service_name]
         }
     }
 }

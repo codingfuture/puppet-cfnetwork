@@ -38,4 +38,9 @@ define cfnetwork::client_port (
         group   => $group,
         comment => $comment,
     }
+    cfnetwork::internal::fetch_hosts { "client:${title}":
+        src    => $src,
+        dst    => $dst,
+        before => Anchor['cfnetwork:pre-firewall'],
+    }
 }
