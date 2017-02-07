@@ -42,7 +42,7 @@ class cfnetwork::dnsmasq(
         $dns_systemd_unit = "/etc/systemd/system/${dns_service}.service"
 
         # Serve all exported hosts in location
-        Cfnetwork::Internal::Exported_host  <<| location == $::cf_location |>>
+        Cfnetwork::Internal::Exported_host  <<| location == $cfnetwork::location |>>
 
         Package['pdnsd'] ->
         package { 'dnsmasq-base': } ->

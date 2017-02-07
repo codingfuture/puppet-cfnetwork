@@ -19,7 +19,7 @@ define cfnetwork::internal::fetch_hosts(
                 !defined(Cfnetwork::Internal::Exported_host[$v])
             {
                 Cfnetwork::Internal::Exported_host  <<|
-                    (title == $v) and (location == $::cf_location)
+                    (title == $v) and (location == $cfnetwork::location)
                 |>>
             }
         }

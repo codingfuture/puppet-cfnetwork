@@ -24,10 +24,10 @@ define cfnetwork::client_port (
             user          => $user,
             group         => $group,
             comment       => $comment,
-            tag           => [$::cf_location, $::cf_location_pool],
+            tag           => [$cfnetwork::location, $cfnetwork::location_pool],
             hostname      => $::trusted['certname'],
-            location      => $::cf_location,
-            location_pool => $::cf_location_pool,
+            location      => $cfnetwork::location,
+            location_pool => $cfnetwork::location_pool,
         }
     }
     @cfnetwork_firewall_port { "client:${title}":

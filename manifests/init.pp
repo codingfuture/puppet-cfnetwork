@@ -35,6 +35,18 @@ class cfnetwork (
         $hosts = undef,
 ) {
     include cfnetwork::sysctl
+    #---
+    $location = pick(
+        $::facts['cf_location'],
+        lookup('cfsystem::hierapool::location'),
+        ''
+    )
+    $location_pool = pick(
+        $::facts['cf_location_pool'],
+        lookup('cfsystem::hierapool::pool'),
+        ''
+    )
+
 
     #---
     case $::operatingsystem {
@@ -138,8 +150,8 @@ class cfnetwork (
         @@cfnetwork::internal::exported_host {$::trusted['certname']:
             host_aliases  => [ $::trusted['hostname'] ],
             ip            => $host_ip,
-            location      => $::cf_location,
-            location_pool => $::cf_location_pool,
+            location      => $cfnetwork::location,
+            location_pool => $cfnetwork::location_pool,
         }
     }
 

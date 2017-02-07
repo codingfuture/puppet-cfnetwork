@@ -14,6 +14,8 @@ project adheres to [Semantic Versioning](http://semver.org/).
 - Changed to allow failed to resolve DNS entries in firewall config
     not to break bootstrap
 - Changed prune of unknown /etc/hosts entries
+- Improved cf_location/cf_location_pool support on initial deployment
+    when facts are not set (lookup of cfsystem parameters)
 
 ## [0.10.1]
 - Minor improvement for error reporting of internal features

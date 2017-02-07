@@ -8,8 +8,8 @@ define cfnetwork::internal::exported_host (
     # $title = "hostname"
     $host_aliases,
     $ip,
-    $location, # = $::cf_location
-    $location_pool, # = $::cf_location_pool
+    $location, # = $cfnetwork::location
+    $location_pool, # = $cfnetwork::location_pool
 ) {
     if $title != $::trusted['certname'] and !defined(Host[$title]) {
         host { $title:

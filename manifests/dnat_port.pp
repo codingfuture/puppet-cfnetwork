@@ -24,10 +24,10 @@ define cfnetwork::dnat_port (
             to_dst        => $to_dst,
             to_port       => $to_port,
             comment       => $comment,
-            tag           => [$::cf_location, $::cf_location_pool],
+            tag           => [$cfnetwork::location, $cfnetwork::location_pool],
             hostname      => $::trusted['certname'],
-            location      => $::cf_location,
-            location_pool => $::cf_location_pool,
+            location      => $cfnetwork::location,
+            location_pool => $cfnetwork::location_pool,
         }
     }
     @cfnetwork_firewall_port { "dnat:${title}":

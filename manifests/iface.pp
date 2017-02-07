@@ -335,8 +335,8 @@ define cfnetwork::iface (
             @@cfnetwork::internal::exported_host { "${host_prefix}.${::trusted['certname']}":
                 host_aliases  => [ "${host_prefix}.${::trusted['hostname']}" ],
                 ip            => $host_ip,
-                location      => $::cf_location,
-                location_pool => $::cf_location_pool,
+                location      => $cfnetwork::location,
+                location_pool => $cfnetwork::location_pool,
             }
         }
     }

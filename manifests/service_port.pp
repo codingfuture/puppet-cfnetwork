@@ -18,10 +18,10 @@ define cfnetwork::service_port (
             src           => $src,
             dst           => $dst,
             comment       => $comment,
-            tag           => [$::cf_location, $::cf_location_pool],
+            tag           => [$cfnetwork::location, $cfnetwork::location_pool],
             hostname      => $::trusted['certname'],
-            location      => $::cf_location,
-            location_pool => $::cf_location_pool,
+            location      => $cfnetwork::location,
+            location_pool => $cfnetwork::location_pool,
         }
     }
     @cfnetwork_firewall_port { "service:${title}":
