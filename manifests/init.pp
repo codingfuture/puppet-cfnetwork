@@ -37,13 +37,13 @@ class cfnetwork (
     include cfnetwork::sysctl
     #---
     $location = pick(
-        $::facts['cf_location'],
         lookup('cfsystem::hierapool::location'),
+        $::facts['cf_location'],
         ''
     )
     $location_pool = pick(
-        $::facts['cf_location_pool'],
         lookup('cfsystem::hierapool::pool'),
+        $::facts['cf_location_pool'],
         ''
     )
 
