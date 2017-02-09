@@ -280,9 +280,9 @@ some processing.
       If true, enables packet forwarding and other related sysctl
 * 'optimize_10gbe' = `false`
       If true, optimizes network stack for 10+ Gbit network
-* 'firewall_provider' = `'cffirehol'`
+* 'firewall_provider' = `'auto'`
       Module name, implementing fireall provider. Its value is a soft
-      dependency. 'cffirehol' is used by default
+      dependency. 'cffirehol' is used by default for Linux
 * 'export_resources' = `true`
       If true, resources are exported to PuppetDB as well
 * `service_face` = `'any'` - the interface to listen for client of configured services

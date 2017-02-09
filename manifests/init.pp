@@ -28,7 +28,7 @@ class cfnetwork (
     String[1]
         $service_face = 'any',
     String[1]
-        $firewall_provider = 'cffirehol',
+        $firewall_provider = 'auto',
     Boolean
         $export_resources = true,
     Optional[Hash[String[1], Hash]]
@@ -52,6 +52,7 @@ class cfnetwork (
     case $::operatingsystem {
         'Debian', 'Ubuntu': {
             $dns_service_name = 'dnsmasq'
+            $def_firewall_provider = 'cffirehol'
             include cfnetwork::debian
         }
         default: { err("Not supported OS ${::operatingsystem}") }
@@ -230,12 +231,8 @@ class cfnetwork (
             $describe_services
         )
     }
-
-    if $firewall_provider {
-        # dynamic bi-directional dep
-        include $firewall_provider
-    }
-
+    
+    #---
     if $hosts {
         create_resources('host', $hosts, {
             before => Anchor['cfnetwork:pre-firewall']
@@ -251,4 +248,14 @@ class cfnetwork (
     #---
     anchor { 'cfnetwork:pre-firewall': }
     anchor { 'cfnetwork:firewall': }
+
+    # it should be the last
+    #--
+    if $firewall_provider == 'auto' {
+        # dynamic bi-directional dep
+        include $def_firewall_provider
+    } else {
+        # dynamic bi-directional dep
+        include $firewall_provider
+    }
 }

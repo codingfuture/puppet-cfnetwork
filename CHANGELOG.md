@@ -16,6 +16,7 @@ project adheres to [Semantic Versioning](http://semver.org/).
 - Changed prune of unknown /etc/hosts entries
 - Improved cf_location/cf_location_pool support on initial deployment
     when facts are not set (lookup of cfsystem parameters)
+- Changed $firewall_provider to 'auto' by default
 
 ## [0.10.1]
 - Minor improvement for error reporting of internal features
