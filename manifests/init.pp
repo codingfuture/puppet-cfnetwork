@@ -36,13 +36,19 @@ class cfnetwork (
 ) {
     include cfnetwork::sysctl
     #---
-    $location = pick(
-        lookup('cfsystem::hierapool::location'),
+    $location = pick_default(
+        lookup({
+            name          => 'cfsystem::hierapool::location',
+            default_value => undef,
+        }),
         $::facts['cf_location'],
         ''
     )
-    $location_pool = pick(
-        lookup('cfsystem::hierapool::pool'),
+    $location_pool = pick_default(
+        lookup({
+            name          => 'cfsystem::hierapool::pool',
+            default_value => undef,
+        }),
         $::facts['cf_location_pool'],
         ''
     )
