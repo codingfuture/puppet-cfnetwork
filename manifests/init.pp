@@ -237,7 +237,7 @@ class cfnetwork (
             $describe_services
         )
     }
-    
+
     #---
     if $hosts {
         create_resources('host', $hosts, {
