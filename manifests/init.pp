@@ -7,7 +7,7 @@ class cfnetwork (
         $main = undef,
     Optional[Variant[String[1], Array[String[1]]]]
         $dns = undef,
-    Optional[Hash[String[1], Hash]]
+    Optional[Hash[Cfnetwork::Ifacename, Hash]]
         $ifaces = undef,
     Optional[Hash[String[1], Hash]]
         $describe_services = undef,
@@ -25,13 +25,13 @@ class cfnetwork (
         $is_router = false,
     Boolean
         $optimize_10gbe = false, # TODO: facter
-    String[1]
+    Cfnetwork::Ifacename
         $service_face = 'any',
     String[1]
         $firewall_provider = 'auto',
     Boolean
         $export_resources = true,
-    Optional[Hash[String[1], Hash]]
+    Optional[Hash[String[1], Host]]
         $hosts = undef,
 ) {
     include cfnetwork::sysctl
@@ -119,7 +119,7 @@ class cfnetwork (
     #---
     if defined(Cfnetwork::Iface['main']) {
         $host_ip = pick_default(
-            cf_get_bind_address('main'),
+            cfnetwork::bind_address('main'),
             $::networking['ip']
         )
     } else {

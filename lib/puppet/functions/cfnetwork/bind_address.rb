@@ -2,16 +2,16 @@
 # Copyright 2017 (c) Andrey Galkin
 #
 
+Puppet::Functions.create_function(:'cfnetwork::bind_address') do
+    dispatch :bind_address do
+        param 'Cfnetwork::Bindface', :iface
+    end
 
-module Puppet::Parser::Functions
-    newfunction(:cf_get_bind_address,  :type => :rvalue, :arity => 1) do |args|
-        iface = args[0]
-        raise(ArgumentError, "Invalid interface #{iface}. Valid: 'iface', 'iface:N', 'host'") unless iface and iface.is_a? String
-        
+    def bind_address(iface)
         iface, addr_num = iface.split(':', 2)
         addr_num = 0 if addr_num.nil?
         
-        if iface_resource = findresource("Cfnetwork::Iface[#{iface}]")
+        if iface_resource = closure_scope.findresource("Cfnetwork::Iface[#{iface}]")
             addr = iface_resource['address']
             addr = [] if addr.nil?
             addr = [addr] unless addr.is_a? Array
@@ -31,10 +31,6 @@ module Puppet::Parser::Functions
             end
 
             ret[addr_num]
-        #elsif host_resource = findresource("Host[#{iface}]")
-        #    host_resource['ip']
-        #elsif host_resource = findresource("Host[#{iface}.#{}]")
-        #    host_resource['ip']
         else
             raise(ArgumentError, "Resource not found for #{iface}")
         end

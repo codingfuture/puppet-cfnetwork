@@ -112,21 +112,21 @@ define cfnetwork::iface (
     #---
 
     # puppet-lint warnings
-    #[$address4, $address6] = cf_sort_ipv($all_addresses)
-    #[$routes4, $routes6] = cf_sort_ipv($all_routes)
+    #[$address4, $address6] = cfnetwork::sort_ipv($all_addresses)
+    #[$routes4, $routes6] = cfnetwork::sort_ipv($all_routes)
 
-    $address46 = cf_sort_ipv($is_dhcp ? {
+    $address46 = cfnetwork::sort_ipv($is_dhcp ? {
         true    => [],
         default => $all_addresses
     })
     $address4 = $address46[0]
     $address6 = $address46[1]
 
-    $routes46 = cf_sort_ipv($all_routes, ['network'])
+    $routes46 = cfnetwork::sort_ipv($all_routes, ['network'])
     $routes4 = $routes46[0]
     $routes6 = $routes46[1]
 
-    $gateway46 = cf_sort_ipv(any2array(pick($gateway, [])))
+    $gateway46 = cfnetwork::sort_ipv(any2array(pick($gateway, [])))
     $gateway4 = $gateway46[0][0]
     $gateway6 = $gateway46[1][0]
 
