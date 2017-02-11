@@ -31,7 +31,7 @@ class cfnetwork (
         $firewall_provider = 'auto',
     Boolean
         $export_resources = true,
-    Optional[Hash[String[1], Host]]
+    Optional[Hash[String[1], Hash]]
         $hosts = undef,
 ) {
     include cfnetwork::sysctl
