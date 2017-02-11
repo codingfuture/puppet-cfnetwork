@@ -474,6 +474,7 @@ Self-explanatory sysctl settings with their defaults, unless specially noted:
 
 * `Cfnetwork::Bindaddress` - type alias for bind address name
 * `Cfnetwork::Ifacename` - type alias for interface name
+* `Cfnetwork::Port` - type alias for network port Integer
 * `cfnetwork::bind_address(arg)` - get bind address for specified arg, where:
     * 'iface' - first address of Cfnetwork::Iface[iface] resource
     * 'iface:N' - address #N of Cfnetwork::Iface[iface] resource
