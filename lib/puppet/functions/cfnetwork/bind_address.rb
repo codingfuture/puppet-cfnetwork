@@ -11,7 +11,7 @@ Puppet::Functions.create_function(:'cfnetwork::bind_address') do
         iface, addr_num = iface.split(':', 2)
         addr_num = 0 if addr_num.nil?
         
-        return "127.0.0.#{addr_num + 1}" if iface = 'local'
+        return "127.0.0.#{addr_num + 1}" if iface == 'local'
 
         if iface_resource = closure_scope.findresource("Cfnetwork::Iface[#{iface}]")
             addr = iface_resource['address']
