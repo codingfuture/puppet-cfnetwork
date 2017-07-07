@@ -44,15 +44,15 @@ class cfnetwork::dnsmasq(
         # Serve all exported hosts in location
         Cfnetwork::Internal::Exported_host  <<| location == $cfnetwork::location |>>
 
-        Package['pdnsd'] ->
-        package { 'dnsmasq-base': } ->
-        package { 'dnsmasq':
+        Package['pdnsd']
+        -> package { 'dnsmasq-base': }
+        -> package { 'dnsmasq':
             ensure => absent,
-        } ->
-        cfnetwork::client_port { "any:dns:${dns_service}":
+        }
+        -> cfnetwork::client_port { "any:dns:${dns_service}":
             user=> $dns_user
-        } ->
-        file { '/etc/dnsmasq.conf':
+        }
+        -> file { '/etc/dnsmasq.conf':
             mode    => '0600',
             owner   => $dns_user,
             content => epp('cfnetwork/dnsmasq.conf', {
@@ -62,21 +62,21 @@ class cfnetwork::dnsmasq(
                 custom_config => $custom_config,
             }),
             notify  => Service[$dns_service],
-        } ->
-        file { $dns_systemd_unit:
+        }
+        -> file { $dns_systemd_unit:
             mode    => '0644',
             content => epp('cfnetwork/dnsmasq.service', {
                 after    => '',
                 memlimit => $memlimit,
             }),
-        } ->
-        Exec['cfnetwork-systemd-reload'] ->
-        service { $dns_service:
+        }
+        -> Exec['cfnetwork-systemd-reload']
+        -> service { $dns_service:
             ensure   => running,
             enable   => true,
             provider => 'systemd',
-        } ->
-        File['/etc/resolv.conf']
+        }
+        -> File['/etc/resolv.conf']
     } else {
         service { $dns_service:
             ensure   => stopped,
