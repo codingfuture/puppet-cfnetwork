@@ -19,6 +19,31 @@ class cfnetwork::dnsmasq(
     assert_private();
 
     #---
+    $dnssec_actual = $::facts['operatingsystem'] ? {
+        'Debian' => (versioncmp($::facts['operatingsystemrelease'], '9') >= 0) ? {
+            true    => $dnssec,
+            default => false
+        },
+        'Ubuntu' => (versioncmp($::facts['operatingsystemrelease'], '16.04') >= 0) ? {
+            true    => $dnssec,
+            default => false
+        },
+        default  => $dnssec
+    }
+
+    if $dnssec_actual != $dnssec {
+        $dnssec_message = [
+            'Forcibly disabled DNSSEC due to bug in dnsmasq < 2.73:',
+            'https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=805596'
+        ].join("\n")
+
+        notify { 'cfnetwork:dnsmasq:dnssec':
+            message  => $dnssec_message,
+            loglevel => warning,
+        }
+    }
+
+    #---
     case $::cfnetwork::dns {
         '$recurse', '$local': {
             $dns_listen = '127.0.0.1'
@@ -58,7 +83,7 @@ class cfnetwork::dnsmasq(
             content => epp('cfnetwork/dnsmasq.conf', {
                 listen        => $dns_listen,
                 upstream      => $upstream,
-                dnssec        => $dnssec,
+                dnssec        => $dnssec_actual,
                 custom_config => $custom_config,
             }),
             notify  => Service[$dns_service],
