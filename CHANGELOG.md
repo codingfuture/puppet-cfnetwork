@@ -3,6 +3,9 @@
 All notable changes to this project will be documented in this file. This
 project adheres to [Semantic Versioning](http://semver.org/).
 
+## [0.11.7](https://github.com/codingfuture/puppet-cfnetwork/releases/tag/v0.11.7)
+- FIXED: to excluded bundler-related stuff
+
 ## [0.11.6](https://github.com/codingfuture/puppet-cfnetwork/releases/tag/v0.11.6)
 - FIXED: not to show warning forced DNSSEC disable, unless dnsmasq is used
 
