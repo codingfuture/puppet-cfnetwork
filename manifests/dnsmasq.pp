@@ -31,18 +31,6 @@ class cfnetwork::dnsmasq(
         default  => $dnssec
     }
 
-    if $dnssec_actual != $dnssec {
-        $dnssec_message = [
-            'Forcibly disabled DNSSEC due to bug in dnsmasq < 2.73:',
-            'https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=805596'
-        ].join("\n")
-
-        notify { 'cfnetwork:dnsmasq:dnssec':
-            message  => $dnssec_message,
-            loglevel => warning,
-        }
-    }
-
     #---
     case $::cfnetwork::dns {
         '$recurse', '$local': {
@@ -56,6 +44,19 @@ class cfnetwork::dnsmasq(
         }
         default: {
             $dns_listen = undef
+        }
+    }
+
+    #---
+    if $dns_listen and $dnssec_actual != $dnssec {
+        $dnssec_message = [
+            'Forcibly disabled DNSSEC due to bug in dnsmasq < 2.73:',
+            'https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=805596'
+        ].join("\n")
+
+        notify { 'cfnetwork:dnsmasq:dnssec':
+            message  => $dnssec_message,
+            loglevel => warning,
         }
     }
 
