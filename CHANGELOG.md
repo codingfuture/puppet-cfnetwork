@@ -3,6 +3,9 @@
 All notable changes to this project will be documented in this file. This
 project adheres to [Semantic Versioning](http://semver.org/).
 
+## [0.11.8](https://github.com/codingfuture/puppet-cfnetwork/releases/tag/v0.11.8)
+- CHANGED: not to set deprecated 'net.ipv4.tcp_tw_recycle'
+
 ## [0.11.7](https://github.com/codingfuture/puppet-cfnetwork/releases/tag/v0.11.7)
 - FIXED: to excluded bundler-related stuff
 

@@ -20,7 +20,7 @@ class cfnetwork::sysctl (
     Integer $tcp_synack_retries = 2,
     Integer $tcp_syncookies = 1,
     Integer $tcp_timestamps = 1,
-    Integer $tcp_tw_recycle = 1,
+    Integer $tcp_tw_recycle = -1,
     Integer $tcp_tw_reuse = 1,
     Integer $tcp_window_scaling = 1,
     Integer $file_max = $cfnetwork::sysctl::params::file_max, # 256 per 4MB
@@ -154,8 +154,6 @@ class cfnetwork::sysctl (
             value => $ip_local_port_range}
 
     # Basic TCP tuning
-    sysctl{ 'net.ipv4.tcp_tw_recycle':
-            value => $tcp_tw_recycle}
     sysctl{ 'net.ipv4.tcp_tw_reuse':
             value => $tcp_tw_reuse}
     sysctl{ 'net.ipv4.tcp_fin_timeout':
