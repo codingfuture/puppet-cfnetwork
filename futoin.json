@@ -1,6 +1,6 @@
 {
   "name": "codingfuture-cfnetwork",
-  "version": "0.11.8",
+  "version": "0.11.9",
   "vcs": "git",
   "package": [
     "pkg"
