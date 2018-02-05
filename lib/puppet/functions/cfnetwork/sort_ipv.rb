@@ -43,7 +43,7 @@ Puppet::Functions.create_function(:'cfnetwork::sort_ipv') do
         v6 = []
         
         data.each do |v|
-            addr = call_function(:dig, [v] + path)
+            addr = call_function('dig', [v] + path)
 
             begin
                 addr = IPAddr.new addr
