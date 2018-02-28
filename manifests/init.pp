@@ -33,6 +33,13 @@ class cfnetwork (
         $export_resources = true,
     Optional[Hash[String[1], Hash]]
         $hosts = undef,
+    Array[String[1]]
+        $localnet = [
+            '10.0.0.0/8',
+            '172.16.0.0/12',
+            '192.168.0.0/16',
+            'fd00::/8',
+        ]
 ) {
     include cfnetwork::sysctl
     #---
@@ -194,6 +201,10 @@ class cfnetwork (
         type    => 'net',
         addr    => [],
         dynamic => true,
+    }
+    cfnetwork::ipset { 'localnet':
+        type => 'net',
+        addr => $localnet,
     }
 
     if $ipsets {

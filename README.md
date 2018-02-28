@@ -33,6 +33,13 @@ cfnetwork::ipsets:
     whitelist:
         type: net
         dynamic: true
+    localnet:
+        type: net
+        addr:
+            - 10.0.0.0/8
+            - 172.16.0.0/12
+            - 192.168.0.0/16
+            - 'fd00::/8'
 cfnetwork::describe_services:
     'dns':
         server: [ 'tcp/53', 'udp/53' ]

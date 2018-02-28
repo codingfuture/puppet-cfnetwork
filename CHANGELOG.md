@@ -3,6 +3,9 @@
 All notable changes to this project will be documented in this file. This
 project adheres to [Semantic Versioning](http://semver.org/).
 
+## [0.12.1](https://github.com/codingfuture/puppet-cfnetwork/releases/tag/v0.12.1)
+- NEW: ipset:localnet feature
+
 ## [0.12.0](https://github.com/codingfuture/puppet-cfnetwork/releases/tag/v0.12.0)
 - FIXED: minor Puppet 5 issue in sort_ipv
 
