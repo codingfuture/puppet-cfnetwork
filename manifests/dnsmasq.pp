@@ -40,7 +40,9 @@ class cfnetwork::dnsmasq(
         '$serve': {
             $dns_listen = '0.0.0.0'
             cfnetwork::service_port { 'local:dns': }
-            cfnetwork::service_port { "${cfnetwork::service_face}:dns": }
+            cfnetwork::service_port { "${cfnetwork::service_face}:dns":
+                src => 'ipset:localnet',
+            }
         }
         default: {
             $dns_listen = undef
