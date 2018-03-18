@@ -193,12 +193,12 @@ class cfnetwork::sysctl (
     # even if not really used.
     if !$enable_bridge_filter {
         exec {'load_bridge_module':
-            command => '/sbin/modprobe bridge',
+            command => '/sbin/modprobe bridge && /bin/sleep 5',
             unless  => '/sbin/lsmod | /bin/egrep "^bridge"',
         }
         if versioncmp($::facts['kernelversion'], '3.18') > 0 {
             exec {'load_br_netfilter_module':
-                command => '/sbin/modprobe br_netfilter',
+                command => '/sbin/modprobe br_netfilter && /bin/sleep 5',
                 unless  => '/sbin/lsmod | /bin/egrep "^br_netfilter"',
             }
         }
@@ -218,7 +218,7 @@ class cfnetwork::sysctl (
     # Netfilter optimization
     #---
     exec {'load_conntrack_module':
-        command => '/sbin/modprobe nf_conntrack_ipv4',
+        command => '/sbin/modprobe nf_conntrack_ipv4 && /bin/sleep 15',
         unless  => '/sbin/lsmod | /bin/egrep "^nf_conntrack_ipv4"',
     }
 

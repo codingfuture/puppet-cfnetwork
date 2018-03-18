@@ -3,6 +3,9 @@
 All notable changes to this project will be documented in this file. This
 project adheres to [Semantic Versioning](http://semver.org/).
 
+## (next)
+- FIXED: added post-modprobe delay to workaround sysctl failures due to race condition
+
 ## [0.12.1](https://github.com/codingfuture/puppet-cfnetwork/releases/tag/v0.12.1)
 - CHANGED: improved DNS service security with ipset:localnet
 - NEW: ipset:localnet feature
