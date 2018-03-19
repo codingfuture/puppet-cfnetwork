@@ -5,6 +5,7 @@ project adheres to [Semantic Versioning](http://semver.org/).
 
 ## (next)
 - FIXED: added post-modprobe delay to workaround sysctl failures due to race condition
+- FIXED: to remove 0/0 & ::/0 implicit routes from DHCP interfaces (fixes cffirehol logic)
 
 ## [0.12.1](https://github.com/codingfuture/puppet-cfnetwork/releases/tag/v0.12.1)
 - CHANGED: improved DNS service security with ipset:localnet

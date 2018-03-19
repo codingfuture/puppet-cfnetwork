@@ -188,22 +188,11 @@ define cfnetwork::iface (
 
     # link-local routes
     #---
-    $link_local_address = $fact_ipv6 ? {
+    $link_local_address = ($fact_ipv6 ? {
         true => ['FE80::/10'],
         default => []
-    }
-
-    $link_local_routes = ($fact_ipv4 ? {
-        true => $is_dhcp ? {
-            true => ['169.254.0.0/16', '0.0.0.0/0'],
-            default => []
-        },
-        default => []
-    }) + ($fact_ipv6 ? {
-        true => ['FE80::/10'] + ($is_dhcp ? {
-            true => ['::/0'],
-            default => []
-        }),
+    }) + ($fact_ipv4 ? {
+        true => ['169.254.0.0/16'],
         default => []
     })
 
@@ -296,7 +285,7 @@ define cfnetwork::iface (
         method          => $method,
         address         => $all_addresses[0],
         extra_addresses => $all_addresses[1, -1] + $link_local_address,
-        extra_routes    => $all_routes + $link_local_routes,
+        extra_routes    => $all_routes,
         gateway         => $gateway,
         force_public    => $force_public,
     }
