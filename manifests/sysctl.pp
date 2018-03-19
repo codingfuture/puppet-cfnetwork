@@ -54,6 +54,11 @@ class cfnetwork::sysctl (
     include stdlib
     assert_private();
 
+    class { 'cfnetwork::internal::sysctlmods':
+        enable_bridge_filter => $enable_bridge_filter,
+        stage                => 'setup',
+    }
+
     # Spoof protection (reverse-path filter)
     # Turn on Source Address Verification in all interfaces to
     # prevent some spoofing attacks    
@@ -192,105 +197,86 @@ class cfnetwork::sysctl (
     # To avoid issues on router or xen host, load bridge module
     # even if not really used.
     if !$enable_bridge_filter {
-        exec {'load_bridge_module':
-            command => '/sbin/modprobe bridge',
-            unless  => '/sbin/lsmod | /bin/egrep -q "^bridge"',
-        }
-        if versioncmp($::facts['kernelversion'], '3.18') > 0 {
-            exec {'load_br_netfilter_module':
-                command => '/sbin/modprobe br_netfilter && /bin/sleep 15',
-                unless  => '/sbin/lsmod | /bin/egrep -q "^br_netfilter"',
-            }
-
-            $bridge_dep = Exec['load_br_netfilter_module']
-        } else {
-            $bridge_dep = Exec['load_bridge_module']
-        }
-
         sysctl{ 'net.bridge.bridge-nf-call-ip6tables':
-                value   => 0,
-                require => $bridge_dep,
+                value  => 0,
+                silent => true,
         }
         sysctl{ 'net.bridge.bridge-nf-call-iptables':
-                value   => 0,
-                require => $bridge_dep,
+                value  => 0,
+                silent => true,
         }
         sysctl{ 'net.bridge.bridge-nf-call-arptables':
-                value   => 0,
-                require => $bridge_dep,
+                value  => 0,
+                silent => true,
         }
     }
 
     # Netfilter optimization
     #---
-    exec {'load_conntrack_module':
-        command => '/sbin/modprobe nf_conntrack && /bin/sleep 15',
-        unless  => '/sbin/lsmod | /bin/egrep -q "^nf_conntrack"',
-    }
-
     if $nf_conntrack_max {
         sysctl{ 'net.netfilter.nf_conntrack_max':
-            value   => $nf_conntrack_max,
-            require => Exec['load_conntrack_module'],
+            value  => $nf_conntrack_max,
+            silent => true,
         }
     }
+
     if $nf_conntrack_expect_max {
         sysctl{ 'net.netfilter.nf_conntrack_expect_max':
-            value   => $nf_conntrack_max,
-            require => Exec['load_conntrack_module'],
+            value  => $nf_conntrack_max,
+            silent => true,
         }
     }
 
     sysctl{ 'net.netfilter.nf_conntrack_generic_timeout':
-            value   => $nf_conntrack_generic_timeout,
-            require => Exec['load_conntrack_module'],
+        value  => $nf_conntrack_generic_timeout,
+        silent => true,
     }
     sysctl{ 'net.netfilter.nf_conntrack_tcp_timeout_syn_sent':
-            value   => $nf_conntrack_tcp_timeout_syn_sent,
-            require => Exec['load_conntrack_module'],
+        value  => $nf_conntrack_tcp_timeout_syn_sent,
+        silent => true,
     }
     sysctl{ 'net.netfilter.nf_conntrack_tcp_timeout_syn_recv':
-            value   => $nf_conntrack_tcp_timeout_syn_recv,
-            require => Exec['load_conntrack_module'],
+        value  => $nf_conntrack_tcp_timeout_syn_recv,
+        silent => true,
     }
     sysctl{ 'net.netfilter.nf_conntrack_tcp_timeout_established':
-            value   => $nf_conntrack_tcp_timeout_established,
-            require => Exec['load_conntrack_module'],
+        value  => $nf_conntrack_tcp_timeout_established,
+        silent => true,
     }
     sysctl{ 'net.netfilter.nf_conntrack_tcp_timeout_fin_wait':
-            value   => $tcp_fin_timeout,
-            require => Exec['load_conntrack_module'],
+        value  => $tcp_fin_timeout,
+        silent => true,
     }
     sysctl{ 'net.netfilter.nf_conntrack_tcp_timeout_last_ack':
-            value   => $nf_conntrack_tcp_timeout_last_ack,
-            require => Exec['load_conntrack_module'],
+        value  => $nf_conntrack_tcp_timeout_last_ack,
+        silent => true,
     }
     sysctl{ 'net.netfilter.nf_conntrack_tcp_timeout_time_wait':
-            value   => $nf_conntrack_tcp_timeout_time_wait,
-            require => Exec['load_conntrack_module'],
+        value  => $nf_conntrack_tcp_timeout_time_wait,
+        silent => true,
     }
     sysctl{ 'net.netfilter.nf_conntrack_tcp_loose':
-            value   => $nf_conntrack_tcp_loose,
-            require => Exec['load_conntrack_module'],
+        value  => $nf_conntrack_tcp_loose,
+        silent => true,
     }
     sysctl{ 'net.netfilter.nf_conntrack_tcp_be_liberal':
-            value   => $nf_conntrack_tcp_be_liberal,
-            require => Exec['load_conntrack_module'],
+        value  => $nf_conntrack_tcp_be_liberal,
+        silent => true,
     }
     sysctl{ 'net.netfilter.nf_conntrack_tcp_max_retrans':
-            value   => $nf_conntrack_tcp_max_retrans,
-            require => Exec['load_conntrack_module'],
+        value  => $nf_conntrack_tcp_max_retrans,
+        silent => true,
     }
     sysctl{ 'net.netfilter.nf_conntrack_udp_timeout':
-            value   => $nf_conntrack_udp_timeout,
-            require => Exec['load_conntrack_module'],
+        value  => $nf_conntrack_udp_timeout,
+        silent => true,
     }
     sysctl{ 'net.netfilter.nf_conntrack_udp_timeout_stream':
-            value   => $nf_conntrack_udp_timeout_stream,
-            require => Exec['load_conntrack_module'],
+        value  => $nf_conntrack_udp_timeout_stream,
+        silent => true,
     }
     sysctl{ 'net.netfilter.nf_conntrack_icmp_timeout':
-            value   => $nf_conntrack_icmp_timeout,
-            require => Exec['load_conntrack_module'],
+        value  => $nf_conntrack_icmp_timeout,
+        silent => true,
     }
 }
