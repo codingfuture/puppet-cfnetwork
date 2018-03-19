@@ -193,33 +193,39 @@ class cfnetwork::sysctl (
     # even if not really used.
     if !$enable_bridge_filter {
         exec {'load_bridge_module':
-            command => '/sbin/modprobe bridge && /bin/sleep 5',
-            unless  => '/sbin/lsmod | /bin/egrep "^bridge"',
+            command => '/sbin/modprobe bridge',
+            unless  => '/sbin/lsmod | /bin/egrep -q "^bridge"',
         }
         if versioncmp($::facts['kernelversion'], '3.18') > 0 {
             exec {'load_br_netfilter_module':
-                command => '/sbin/modprobe br_netfilter && /bin/sleep 5',
-                unless  => '/sbin/lsmod | /bin/egrep "^br_netfilter"',
+                command => '/sbin/modprobe br_netfilter && /bin/sleep 15',
+                unless  => '/sbin/lsmod | /bin/egrep -q "^br_netfilter"',
             }
+
+            $bridge_dep = Exec['load_br_netfilter_module']
+        } else {
+            $bridge_dep = Exec['load_bridge_module']
         }
+
         sysctl{ 'net.bridge.bridge-nf-call-ip6tables':
                 value   => 0,
-                require => Exec['load_bridge_module'],
+                require => $bridge_dep,
         }
         sysctl{ 'net.bridge.bridge-nf-call-iptables':
                 value   => 0,
-                require => Exec['load_bridge_module']
+                require => $bridge_dep,
         }
         sysctl{ 'net.bridge.bridge-nf-call-arptables':
                 value   => 0,
-                require => Exec['load_bridge_module'] }
+                require => $bridge_dep,
+        }
     }
 
     # Netfilter optimization
     #---
     exec {'load_conntrack_module':
-        command => '/sbin/modprobe nf_conntrack_ipv4 && /bin/sleep 15',
-        unless  => '/sbin/lsmod | /bin/egrep "^nf_conntrack_ipv4"',
+        command => '/sbin/modprobe nf_conntrack && /bin/sleep 15',
+        unless  => '/sbin/lsmod | /bin/egrep -q "^nf_conntrack"',
     }
 
     if $nf_conntrack_max {
