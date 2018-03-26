@@ -193,7 +193,7 @@ some processing.
 ## Setup
 
 Please use [librarian-puppet](https://rubygems.org/gems/librarian-puppet/) or
-[cfpuppetserver module](https://forge.puppetlabs.com/codingfuture/cfpuppetserver) to deal with dependencies.
+[cfpuppetserver module](https://codingfuture.net/docs/cfpuppetserver) to deal with dependencies.
 
 There is a known r10k issue [RK-3](https://tickets.puppetlabs.com/browse/RK-3) which prevents
 automatic dependencies of dependencies installation.
@@ -491,5 +491,5 @@ Self-explanatory sysctl settings with their defaults, unless specially noted:
 * `cfnetwork::fw_face(arg)` - extract firewall interface name
     from Cfnetwork::Bindaddress
 
-[cfauth]: https://github.com/codingfuture/puppet-cfauth
-[cfsystem]: https://github.com/codingfuture/puppet-cfsystem
+[cfauth]: https://codingfuture.net/docs/cfauth
+[cfsystem]: https://codingfuture.net/docs/cfsystem
