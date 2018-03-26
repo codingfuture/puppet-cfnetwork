@@ -5,85 +5,11 @@
 The module exclusively configures system network interfaces, related sysctl items
 and system firewall. The module is designed to be used with Hiera-like data providers.
 
-## Technical Support
-
-* [Example configuration](https://github.com/codingfuture/puppet-test)
-* Free & Commercial support: [support@codingfuture.net](mailto:support@codingfuture.net)
-
-## Setup
-
-Please use [librarian-puppet](https://rubygems.org/gems/librarian-puppet/) or
-[cfpuppetserver module](https://forge.puppetlabs.com/codingfuture/cfpuppetserver) to deal with dependencies.
-
-There is a known r10k issue [RK-3](https://tickets.puppetlabs.com/browse/RK-3) which prevents
-automatic dependencies of dependencies installation.
-
-## Examples
-
-Please check [codingufuture/puppet-test](https://github.com/codingfuture/puppet-test) for
-example of a complete infrastructure configuration and Vagrant provisioning.
-
-## Implicitly created resources
-
-```yaml
-cfnetwork::ipsets:
-    blacklist:
-        type: net
-        dynamic: true
-    whitelist:
-        type: net
-        dynamic: true
-    localnet:
-        type: net
-        addr:
-            - 10.0.0.0/8
-            - 172.16.0.0/12
-            - 192.168.0.0/16
-            - 'fd00::/8'
-cfnetwork::describe_services:
-    'dns':
-        server: [ 'tcp/53', 'udp/53' ]
-        client: 'any'
-    'alltcp':
-        server: 'tcp/1:65535'
-        client: 'any'
-        comment: "Use to open all TCP ports (e.g. for local)"
-    'alludp':
-        server: 'udp/1:65535'
-        client: 'any'
-        comment: "Use to open all UDP ports (e.g. for local)"
-    'allports':
-        server: [ 'udp/1:65535', 'tcp/1:65535']
-        client: 'any'
-        comment: "Use to open all TCP and UDP ports (e.g. for local)"
-cfnetwork::service_ports:
-    'local:dns': {}
-        comment: 'only in $serve or $local mode'
-    "${cfnetwork::service_face}:dns":
-        comment: 'only in $serve mode'
-cfnetwork::client_ports:
-    'any:dns:dnsmasq':
-        user: 'dnsmasq'
-        comment: 'only in $serve or $local mode'
-    'any:dns:cfnetwork':
-        dst: $cfnetwork::dns
-        comment: 'unless in $serve or $local mode'
-    'any:dns:cfnetwork':
-        comment: 'only if no DNS servers are configured'
-    '{iface}:dhcp:cfnetwork':
-        comment: "for IPv4 ifaces with method=dhcp"
-    '{iface}:dhcpv6:cfnetwork':
-        comment: "for IPv6 ifaces with method=dhcp"
-cfnetwork::router_ports:
-    # for each cfnetwork::dnat_port
-anchor:
-    'cfnetwork:firewall'
-```
 
 ## Concept
 
 Each network interface has a unique name. This identifier is used in firewall port
-definition to specify to which interface to apply the rule.
+definition to specify the interface to apply the rule.
 
 There are predefined interface names:
 * `'local'` - assign rule to loopback interface
@@ -91,7 +17,7 @@ There are predefined interface names:
 
 Each firewall rule name has format of `"interface:service"`. Optionally, additional tag can be
 specified like `"interface:service:tag"`. Such format allows resource to be defined multiple
-times with no name clash and not need for explicit virtual resource processing.
+times with no name clash and no need for explicit virtual resource processing.
 
 **!!! ALL CONNECTIONS ARE BLOCKED BY DEFAULT, EVEN LOCAL !!!**
 
@@ -102,8 +28,9 @@ for plug&play firewall rules definition. For example:
     or '$serve' is configured
 * **[cfauth]** module automatically enables incoming SSH connections on configured ports
     from admin hosts
- **[cfsystem]** module automatically defines rules for NTP, APT repositories, APT cache,
+* **[cfsystem]** module automatically defines rules for NTP, APT repositories, APT cache,
     puppet, etc.
+* **[cfdb]** module allows outgoing database connections for particular users.
 
 
 Examples:
@@ -256,6 +183,82 @@ A matching interface is one of:
 
 Please depend on `Anchor['cfnetwork:firewall']`, if you need new firewal configuration before
 some processing.
+
+
+## Technical Support
+
+* [Example configuration](https://github.com/codingfuture/puppet-test)
+* Free & Commercial support: [support@codingfuture.net](mailto:support@codingfuture.net)
+
+## Setup
+
+Please use [librarian-puppet](https://rubygems.org/gems/librarian-puppet/) or
+[cfpuppetserver module](https://forge.puppetlabs.com/codingfuture/cfpuppetserver) to deal with dependencies.
+
+There is a known r10k issue [RK-3](https://tickets.puppetlabs.com/browse/RK-3) which prevents
+automatic dependencies of dependencies installation.
+
+## Examples
+
+Please check [codingufuture/puppet-test](https://github.com/codingfuture/puppet-test) for
+example of a complete infrastructure configuration and Vagrant provisioning.
+
+## Implicitly created resources
+
+```yaml
+cfnetwork::ipsets:
+    blacklist:
+        type: net
+        dynamic: true
+    whitelist:
+        type: net
+        dynamic: true
+    localnet:
+        type: net
+        addr:
+            - 10.0.0.0/8
+            - 172.16.0.0/12
+            - 192.168.0.0/16
+            - 'fd00::/8'
+cfnetwork::describe_services:
+    'dns':
+        server: [ 'tcp/53', 'udp/53' ]
+        client: 'any'
+    'alltcp':
+        server: 'tcp/1:65535'
+        client: 'any'
+        comment: "Use to open all TCP ports (e.g. for local)"
+    'alludp':
+        server: 'udp/1:65535'
+        client: 'any'
+        comment: "Use to open all UDP ports (e.g. for local)"
+    'allports':
+        server: [ 'udp/1:65535', 'tcp/1:65535']
+        client: 'any'
+        comment: "Use to open all TCP and UDP ports (e.g. for local)"
+cfnetwork::service_ports:
+    'local:dns': {}
+        comment: 'only in $serve or $local mode'
+    "${cfnetwork::service_face}:dns":
+        comment: 'only in $serve mode'
+cfnetwork::client_ports:
+    'any:dns:dnsmasq':
+        user: 'dnsmasq'
+        comment: 'only in $serve or $local mode'
+    'any:dns:cfnetwork':
+        dst: $cfnetwork::dns
+        comment: 'unless in $serve or $local mode'
+    'any:dns:cfnetwork':
+        comment: 'only if no DNS servers are configured'
+    '{iface}:dhcp:cfnetwork':
+        comment: "for IPv4 ifaces with method=dhcp"
+    '{iface}:dhcpv6:cfnetwork':
+        comment: "for IPv6 ifaces with method=dhcp"
+cfnetwork::router_ports:
+    # for each cfnetwork::dnat_port
+anchor:
+    'cfnetwork:firewall'
+```
 
 
 ## Classes and resources types
