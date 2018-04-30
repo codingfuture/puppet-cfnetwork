@@ -54,9 +54,8 @@ class cfnetwork::sysctl (
     include stdlib
     assert_private();
 
-    class { 'cfnetwork::internal::sysctlmods':
-        enable_bridge_filter => $enable_bridge_filter,
-        stage                => 'setup',
+    class { 'cfnetwork::sysctl::mods':
+        stage => 'setup',
     }
 
     # Spoof protection (reverse-path filter)
@@ -190,25 +189,26 @@ class cfnetwork::sysctl (
     sysctl{ 'net.ipv4.tcp_wmem':
             value     => "4096 ${tcp_wmem_default} ${tcp_wmem_max}" }
 
+    $silent = false
+
 
     # Avoid firewall on bridge traffic - make a router instead,
     # if you really need.
     #
     # To avoid issues on router or xen host, load bridge module
     # even if not really used.
-    if !$enable_bridge_filter {
-        sysctl{ 'net.bridge.bridge-nf-call-ip6tables':
-                value  => 0,
-                silent => true,
-        }
-        sysctl{ 'net.bridge.bridge-nf-call-iptables':
-                value  => 0,
-                silent => true,
-        }
-        sysctl{ 'net.bridge.bridge-nf-call-arptables':
-                value  => 0,
-                silent => true,
-        }
+    $enable_bridge_filter_value = Integer.new($enable_bridge_filter)
+    sysctl{ 'net.bridge.bridge-nf-call-ip6tables':
+        value  => $enable_bridge_filter_value,
+        silent => $silent,
+    }
+    sysctl{ 'net.bridge.bridge-nf-call-iptables':
+        value  => $enable_bridge_filter_value,
+        silent => $silent,
+    }
+    sysctl{ 'net.bridge.bridge-nf-call-arptables':
+        value  => $enable_bridge_filter_value,
+        silent => $silent,
     }
 
     # Netfilter optimization
@@ -216,67 +216,67 @@ class cfnetwork::sysctl (
     if $nf_conntrack_max {
         sysctl{ 'net.netfilter.nf_conntrack_max':
             value  => $nf_conntrack_max,
-            silent => true,
+            silent => $silent,
         }
     }
 
     if $nf_conntrack_expect_max {
         sysctl{ 'net.netfilter.nf_conntrack_expect_max':
             value  => $nf_conntrack_max,
-            silent => true,
+            silent => $silent,
         }
     }
 
     sysctl{ 'net.netfilter.nf_conntrack_generic_timeout':
         value  => $nf_conntrack_generic_timeout,
-        silent => true,
+        silent => $silent,
     }
     sysctl{ 'net.netfilter.nf_conntrack_tcp_timeout_syn_sent':
         value  => $nf_conntrack_tcp_timeout_syn_sent,
-        silent => true,
+        silent => $silent,
     }
     sysctl{ 'net.netfilter.nf_conntrack_tcp_timeout_syn_recv':
         value  => $nf_conntrack_tcp_timeout_syn_recv,
-        silent => true,
+        silent => $silent,
     }
     sysctl{ 'net.netfilter.nf_conntrack_tcp_timeout_established':
         value  => $nf_conntrack_tcp_timeout_established,
-        silent => true,
+        silent => $silent,
     }
     sysctl{ 'net.netfilter.nf_conntrack_tcp_timeout_fin_wait':
         value  => $tcp_fin_timeout,
-        silent => true,
+        silent => $silent,
     }
     sysctl{ 'net.netfilter.nf_conntrack_tcp_timeout_last_ack':
         value  => $nf_conntrack_tcp_timeout_last_ack,
-        silent => true,
+        silent => $silent,
     }
     sysctl{ 'net.netfilter.nf_conntrack_tcp_timeout_time_wait':
         value  => $nf_conntrack_tcp_timeout_time_wait,
-        silent => true,
+        silent => $silent,
     }
     sysctl{ 'net.netfilter.nf_conntrack_tcp_loose':
         value  => $nf_conntrack_tcp_loose,
-        silent => true,
+        silent => $silent,
     }
     sysctl{ 'net.netfilter.nf_conntrack_tcp_be_liberal':
         value  => $nf_conntrack_tcp_be_liberal,
-        silent => true,
+        silent => $silent,
     }
     sysctl{ 'net.netfilter.nf_conntrack_tcp_max_retrans':
         value  => $nf_conntrack_tcp_max_retrans,
-        silent => true,
+        silent => $silent,
     }
     sysctl{ 'net.netfilter.nf_conntrack_udp_timeout':
         value  => $nf_conntrack_udp_timeout,
-        silent => true,
+        silent => $silent,
     }
     sysctl{ 'net.netfilter.nf_conntrack_udp_timeout_stream':
         value  => $nf_conntrack_udp_timeout_stream,
-        silent => true,
+        silent => $silent,
     }
     sysctl{ 'net.netfilter.nf_conntrack_icmp_timeout':
         value  => $nf_conntrack_icmp_timeout,
-        silent => true,
+        silent => $silent,
     }
 }

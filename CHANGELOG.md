@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file. This
 project adheres to [Semantic Versioning](http://semver.org/).
 
+## (next)
+- CHANGED: remove silent for sysctl what leads to implicit issues
+- FIXED: improved bridge sysctl handling
+
 ## 0.12.2 (2018-03-19)
 - FIXED: added post-modprobe delay to workaround sysctl failures due to race condition
 - FIXED: to remove 0/0 & ::/0 implicit routes from DHCP interfaces (fixes cffirehol logic)

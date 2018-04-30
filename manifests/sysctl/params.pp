@@ -5,6 +5,7 @@
 
 # Please see README
 class cfnetwork::sysctl::params {
+    include cfnetwork
     $enable_bridge_filter = !$::cfnetwork::is_router
     $optimize_10gbe = $::cfnetwork::optimize_10gbe
     $mem_bytes = $::facts['memory']['system']['total_bytes']
