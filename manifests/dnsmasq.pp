@@ -99,6 +99,11 @@ class cfnetwork::dnsmasq(
             }),
         }
         -> Exec['cfnetwork-systemd-reload']
+        -> service { 'systemd-resolved':
+            ensure   => stopped,
+            enable   => false,
+            provider => 'systemd',
+        }
         -> service { $dns_service:
             ensure   => running,
             enable   => true,
@@ -109,6 +114,11 @@ class cfnetwork::dnsmasq(
         service { $dns_service:
             ensure   => stopped,
             enable   => false,
+            provider => 'systemd',
+        }
+        -> service { 'systemd-resolved':
+            ensure   => running,
+            enable   => true,
             provider => 'systemd',
         }
     }

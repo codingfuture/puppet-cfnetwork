@@ -3,6 +3,9 @@
 All notable changes to this project will be documented in this file. This
 project adheres to [Semantic Versioning](http://semver.org/).
 
+## (next)
+- CHANGED: updated for Ubuntu 18.04 Bionic support
+
 ## 1.0.1 (2018-04-30)
 - CHANGED: remove silent for sysctl what leads to implicit issues
 - FIXED: improved bridge sysctl handling
