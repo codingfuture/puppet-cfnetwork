@@ -18,9 +18,18 @@ define cfnetwork::internal::fetch_hosts(
             if $v =~ /^(?!ipset:)([a-zA-Z][a-zA-Z0-9]+)(\.[a-zA-Z][a-zA-Z0-9]+)*$/ and
                 !defined(Cfnetwork::Internal::Exported_host[$v])
             {
-                Cfnetwork::Internal::Exported_host  <<|
-                    (title == $v) and (location == $cfnetwork::location)
-                |>>
+                if $cfnetwork::hosts_locality == 'pool' {
+                    Cfnetwork::Internal::Exported_host  <<|
+                        (title == $v) and
+                        (location == $cfnetwork::location) and
+                        (location_pool == $cfnetwork::location_pool)
+                    |>>
+                } else {
+                    Cfnetwork::Internal::Exported_host  <<|
+                        (title == $v) and
+                        (location == $cfnetwork::location)
+                    |>>
+                }
             }
         }
     }

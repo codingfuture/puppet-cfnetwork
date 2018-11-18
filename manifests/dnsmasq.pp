@@ -70,7 +70,16 @@ class cfnetwork::dnsmasq(
         $dns_systemd_unit = "/etc/systemd/system/${dns_service}.service"
 
         # Serve all exported hosts in location
-        Cfnetwork::Internal::Exported_host  <<| location == $cfnetwork::location |>>
+        if $cfnetwork::hosts_locality == 'pool' {
+            Cfnetwork::Internal::Exported_host  <<|
+                (location == $cfnetwork::location) and
+                (location_pool == $cfnetwork::location_pool)
+            |>>
+        } else {
+            Cfnetwork::Internal::Exported_host  <<|
+                location == $cfnetwork::location
+            |>>
+        }
 
         Package['pdnsd']
         -> package { 'dnsmasq-base': }

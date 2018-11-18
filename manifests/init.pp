@@ -39,7 +39,9 @@ class cfnetwork (
             '172.16.0.0/12',
             '192.168.0.0/16',
             'fd00::/8',
-        ]
+        ],
+    Enum['location', 'pool']
+        $hosts_locality = 'location',
 ) {
     include cfnetwork::sysctl
     #---
