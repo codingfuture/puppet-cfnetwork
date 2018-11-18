@@ -94,6 +94,8 @@ class cfnetwork (
             dst => $dns_servers
         }
     } else {
+        # systemd-resolved
+        cfnetwork::service_port { 'local:dns:cfnetwork': }
         cfnetwork::client_port { 'any:dns:cfnetwork': }
     }
 
