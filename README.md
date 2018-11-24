@@ -300,6 +300,7 @@ anchor:
 * `service_face` = `'any'` - the interface to listen for client of configured services
 * `hosts = undef` - arbitrary definition of custom /etc/hosts entries based on `host` type
 * `hosts_locality = 'localtion'` - either 'location' or 'pool' for static hosts selection
+* `prefer_ipv4 = true` - prefer IPv4 address resolution over IPv6
 
 ### `cfnetwork::iface` type
 

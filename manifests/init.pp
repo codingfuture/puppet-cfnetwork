@@ -42,6 +42,8 @@ class cfnetwork (
         ],
     Enum['location', 'pool']
         $hosts_locality = 'location',
+    Boolean
+        $prefer_ipv4 = true,
 ) {
     include cfnetwork::sysctl
     #---
@@ -171,6 +173,23 @@ class cfnetwork (
             location      => $cfnetwork::location,
             location_pool => $cfnetwork::location_pool,
         }
+    }
+
+    #---
+    $ipv4_precedence = $prefer_ipv4 ? {
+        true  => 100,
+        false => 10,
+    }
+
+    file_line { 'Prefer IPv4/IPv6':
+        ensure                                => present,
+        path                                  => '/etc/gai.conf',
+        line                                  => "precedence ::ffff:0:0/96  ${ipv4_precedence}",
+        replace                               => true,
+        match                                 => 'precedence\s+::ffff:0:0/96',
+        match_for_absence                     => true,
+        multiple                              => true,
+        replace_all_matches_not_matching_line => true,
     }
 
     #---
