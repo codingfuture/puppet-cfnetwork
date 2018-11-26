@@ -79,6 +79,7 @@ class cfnetwork (
     case $dns {
         '$local', '$recurse', '$serve': {
             $dns_servers = '127.0.0.1'
+            $iface_dns_servers = $dns_servers
             $local_dns = true
         }
         default: {
@@ -87,6 +88,8 @@ class cfnetwork (
             } else {
                 $dns_servers = '127.0.0.53'
             }
+
+            $iface_dns_servers = $dns
             $local_dns = false
         }
     }
@@ -116,7 +119,7 @@ class cfnetwork (
                 main => merge(
                     $main,
                     {
-                        dns_servers => $dns_servers,
+                        dns_servers => $iface_dns_servers,
                         domain => $::trusted['domain'],
                     }
                 )
