@@ -82,12 +82,16 @@ class cfnetwork (
             $local_dns = true
         }
         default: {
-            $dns_servers = $dns
+            if $dns {
+                $dns_servers = $dns
+            } else {
+                $dns_servers = '127.0.0.53'
+            }
             $local_dns = false
         }
     }
 
-    if $dns_servers {
+    if $dns_servers and $local_dns {
         file { '/etc/resolv.conf':
             mode    => '0644',
             content => epp('cfnetwork/resolv.conf.epp', {

@@ -5,6 +5,7 @@ project adheres to [Semantic Versioning](http://semver.org/).
 
 ## (next)
 - CHANGED: updated for Ubuntu 18.04 Bionic support
+- FIXED: to define cfnetwork::dns_servers for systemd-resolved case
 - NEW: cfnetwork::hosts_locality feature
 - NEW: cfnetwork::prefer_ipv4 feature
 
