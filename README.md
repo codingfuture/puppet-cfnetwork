@@ -226,8 +226,14 @@ cfnetwork::describe_services:
     'dns':
         server: [ 'tcp/53', 'udp/53' ]
         client: 'any'
+    'http':
+        server: [ 'tcp/80' ]
+        client: 'any'
+    'https':
+        server: [ 'tcp/443' ]
+        client: 'any'
     'cfhttp':
-        server: [ 'tcp/80', 'udp/443' ]
+        server: [ 'tcp/80', 'tcp/443' ]
         client: 'any'
     'alltcp':
         server: 'tcp/1:65535'
