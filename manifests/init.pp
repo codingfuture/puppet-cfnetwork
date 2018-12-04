@@ -204,6 +204,10 @@ class cfnetwork (
         server => [ 'tcp/53', 'udp/53' ],
         client => 'any',
     }
+    cfnetwork::describe_service { 'cfhttp':
+        server => [ 'tcp/80', 'tcp/443' ],
+        client => 'any',
+    }
     cfnetwork::describe_service { 'alltcp':
         server  => 'tcp/1:65535',
         client  => 'any',
