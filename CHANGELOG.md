@@ -5,6 +5,7 @@ project adheres to [Semantic Versioning](http://semver.org/).
 
 ## (next)
 - CHANGED: to allow dash in domain names
+- FIXED: host names to allow underscores and hyphens (DNS assumption)
 
 ## 1.1.0 (2018-12-09)
 - CHANGED: updated for Ubuntu 18.04 Bionic support

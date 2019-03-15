@@ -45,7 +45,7 @@ Puppet::Type.newtype(:cfnetwork_firewall_ipset) do
                     ip = IPAddr.new(value)
                     return value
                 rescue
-                    unless value =~ /^([a-zA-Z0-9-]+)(\.[a-zA-Z0-9-]+)*$/
+                    unless value =~ /^([a-zA-Z0-9_-]+)(\.[a-zA-Z0-9_-]+)*$/
                         raise ArgumentError, "%s is not valid DNS entry or IP4/6 address" % value
                     end
                     

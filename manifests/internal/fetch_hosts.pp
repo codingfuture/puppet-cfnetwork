@@ -15,7 +15,7 @@ define cfnetwork::internal::fetch_hosts(
 
     if !$cfnetwork::local_dns {
         flatten(delete_undef_values([$src, $dst, $to_dst])).each |$v| {
-            if $v =~ /^(?!ipset:)([a-zA-Z][a-zA-Z0-9]+)(\.[a-zA-Z][a-zA-Z0-9]+)*$/ and
+            if $v =~ /^(?!ipset:)([a-zA-Z][a-zA-Z0-9_-]+)(\.[a-zA-Z][a-zA-Z0-9_-]+)*$/ and
                 !defined(Cfnetwork::Internal::Exported_host[$v])
             {
                 if $cfnetwork::hosts_locality == 'pool' {
