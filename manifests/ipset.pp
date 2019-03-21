@@ -21,4 +21,8 @@ define cfnetwork::ipset(
         dynamic => $dynamic,
         comment => $comment,
     }
+    cfnetwork::internal::fetch_hosts { "ipset:${title}":
+        src    => $addr,
+        before => Anchor['cfnetwork:pre-firewall'],
+    }
 }
