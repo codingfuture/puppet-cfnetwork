@@ -1,5 +1,5 @@
 #
-# Copyright 2017-2018 (c) Andrey Galkin
+# Copyright 2017-2019 (c) Andrey Galkin
 #
 
 # The baseline for module testing used by Puppet Labs is that each manifest
