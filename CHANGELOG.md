@@ -7,6 +7,7 @@ project adheres to [Semantic Versioning](http://semver.org/).
 - CHANGED: to allow dash in domain names
 - CHANGED: cfnetwork::ipset to also force fetching hosts
 - FIXED: host names to allow underscores and hyphens (DNS assumption)
+- FIXED: to update resolved.conf for systemd-resolved
 
 ## 1.1.0 (2018-12-09)
 - CHANGED: updated for Ubuntu 18.04 Bionic support

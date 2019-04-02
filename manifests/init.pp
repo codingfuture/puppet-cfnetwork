@@ -94,6 +94,21 @@ class cfnetwork (
         }
     }
 
+    # Ensure to clear out all artifacts
+    file { '/etc/systemd/network':
+        ensure  => directory,
+        mode    => '0755',
+        purge   => true,
+        recurse => true,
+        notify  => Exec['cfnetwork-systemd-reload'],
+    }
+    file { '/etc/systemd/resolved.conf':
+        mode    => '0644',
+        content => epp('cfnetwork/resolved.conf.epp', {
+          dns_servers => $dns_servers,
+        }),
+    }
+
     if $dns_servers and $local_dns {
         file { '/etc/resolv.conf':
             mode    => '0644',

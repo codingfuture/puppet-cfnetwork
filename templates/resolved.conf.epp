@@ -1,0 +1,9 @@
+[Resolve]
+<% if $dns_servers { any2array($dns_servers).each |$srv| { -%>
+DNS=<%= $srv %>
+<% } } -%>
+Domains=<%= $::trusted['domain'] %>
+DNSSEC=yes
+Cache=yes
+
+
