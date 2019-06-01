@@ -3,6 +3,9 @@
 All notable changes to this project will be documented in this file. This
 project adheres to [Semantic Versioning](http://semver.org/).
 
+## (next)
+- NEW: cfnetwork::dnssec option to control systemd-resolved DNSSEC
+
 ## 1.3.0 (2019-04-14)
 - CHANGED: to allow dash in domain names
 - CHANGED: cfnetwork::ipset to also force fetching hosts

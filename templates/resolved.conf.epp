@@ -3,7 +3,7 @@
 DNS=<%= $srv %>
 <% } } -%>
 Domains=<%= $::trusted['domain'] %>
-DNSSEC=yes
+DNSSEC=<%= $dnssec %>
 Cache=yes
 
 

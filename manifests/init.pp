@@ -44,6 +44,8 @@ class cfnetwork (
         $hosts_locality = 'location',
     Boolean
         $prefer_ipv4 = true,
+    Enum['on', 'allow-downgrade', 'off']
+        $dnssec = 'on',
 ) {
     include cfnetwork::sysctl
     #---
@@ -105,7 +107,8 @@ class cfnetwork (
     file { '/etc/systemd/resolved.conf':
         mode    => '0644',
         content => epp('cfnetwork/resolved.conf.epp', {
-          dns_servers => $dns_servers,
+            dns_servers => $dns_servers,
+            dnssec      => $dnssec,
         }),
     }
 
