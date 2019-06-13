@@ -29,6 +29,10 @@
       "version_requirement": ">=4.7.0 <7.0.0"
     }
   ],
+  "tags": [
+    "networking",
+    "network"
+  ],
   "dependencies": [
     {
       "name": "puppetlabs-stdlib",
